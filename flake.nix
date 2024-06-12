@@ -14,7 +14,7 @@
       let
         pkgs = import nixpkgs { inherit system; };
       in
-       {
+      {
         packages = {
           helix = helixWrapper.packages.${system}.default;
           zellij = zellijWrapper.packages.${system}.default;
@@ -29,44 +29,65 @@
         devShells = {
           default = pkgs.mkShell {
             buildInputs = [
-             self.packages.${system}.helix
-             self.packages.${system}.zellij
-             self.packages.${system}.lf
-             pkgs.marksman
+              self.packages.${system}.helix
+              self.packages.${system}.zellij
+              self.packages.${system}.lf
+              pkgs.marksman
             ];
           };
 
           dotnet = pkgs.mkShell {
             buildInputs = [
               self.packages.${system}.helix
-              self.packages.${system}.zellij self.packages.${system}.lf
+              self.packages.${system}.zellij
+              self.packages.${system}.lf
               pkgs.dotnet-sdk_8
               pkgs.netcoredbg
               pkgs.omnisharp-roslyn
-              pkgs.fsautocomplete 
+              pkgs.fsautocomplete
               pkgs.marksman
             ];
             shellHook = "zellij";
           };
           nix = pkgs.mkShell {
             buildInputs = [
-             self.packages.${system}.helix self.packages.${system}.zellij self.packages.${system}.lf pkgs.nil pkgs.marksman ]; shellHook = "zellij"; };
+              self.packages.${system}.helix
+              self.packages.${system}.zellij
+              self.packages.${system}.lf
+              pkgs.nil
+              pkgs.nixpkgs-fmt
+              pkgs.marksman
+            ];
+            shellHook = "zellij";
+          };
           go = pkgs.mkShell { buildInputs = [ pkgs.go pkgs.gopls pkgs.go-tools pkgs.gotools pkgs.delve pkgs.marksman self.packages.${system}.helix self.packages.${system}.zellij self.packages.${system}.lf ]; shellHook = "zellij"; };
           haskell = pkgs.mkShell {
-              buildInputs = [
-                pkgs.haskellPackages.cabal-install
-                pkgs.haskellPackages.haskell-language-server
-                pkgs.ghc
-                self.packages.${system}.helix
-                self.packages.${system}.zellij
-                self.packages.${system}.lf 
-pkgs.marksman
-              ];
-              shellHook = "zellij";
-            };
+            buildInputs = [
+              pkgs.haskellPackages.cabal-install
+              pkgs.haskellPackages.haskell-language-server
+              pkgs.ghc
+              self.packages.${system}.helix
+              self.packages.${system}.zellij
+              self.packages.${system}.lf
+              pkgs.marksman
+            ];
+            shellHook = "zellij";
+          };
 
         };
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
+        formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
+
+        templates = {
+          dotnet = {
+            path = ./templates/dotnet;
+            description = "Dotnet application template";
+          };
+          nix = {
+            path = ./templates/nix;
+            description = "nix workspace template";
+          };
+        };
+
       }
     );
 }
