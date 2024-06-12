@@ -1,0 +1,6 @@
+* Dev
+
+Use with nix flake, for example:
+#+begin_src shell
+  nix develop git+ssh://git@gitlab.com/victorborzov/dev
+#+end_src
