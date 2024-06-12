@@ -2,10 +2,11 @@
   description = "Development environments";
 
   inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    helixWrapper.url = "gitlab:victorborzov/dev/helix";
-    zellijWrapper.url = "gitlab:victorborzov/dev/zellij";
-    lfWrapper.url = "gitlab:victorborzov/dev/lf";
+    helixWrapper.url = "gitlab:victorborzov/dev?dir=helix";
+    zellijWrapper.url = "gitlab:victorborzov/dev?dir=zellij";
+    lfWrapper.url = "gitlab:victorborzov/dev?dir=lf";
   };
 
   outputs = { self, nixpkgs, flake-utils, helixWrapper, zellijWrapper, lfWrapper, ... }:
@@ -49,8 +50,8 @@
           };
           nix = pkgs.mkShell {
             buildInputs = [
-             self.packages.${system}.helix self.packages.${system}.zellij self.packages.${system}.lf pkgs.nil pkgs.marksman ]; shellHook = "hx"; };
-          go = pkgs.mkShell { buildInputs = [ pkgs.go pkgs.gopls pkgs.go-tools pkgs.gotools pkgs.delve pkgs.marksman self.packages.${system}.helix self.packages.${system}.zellij self.packages.${system}.lf ]; shellHook = "hx"; };
+             self.packages.${system}.helix self.packages.${system}.zellij self.packages.${system}.lf pkgs.nil pkgs.marksman ]; shellHook = "zellij"; };
+          go = pkgs.mkShell { buildInputs = [ pkgs.go pkgs.gopls pkgs.go-tools pkgs.gotools pkgs.delve pkgs.marksman self.packages.${system}.helix self.packages.${system}.zellij self.packages.${system}.lf ]; shellHook = "zellij"; };
           haskell = pkgs.mkShell {
               buildInputs = [
                 pkgs.haskellPackages.cabal-install
@@ -61,7 +62,7 @@
                 self.packages.${system}.lf 
 pkgs.marksman
               ];
-              shellHook = "hx";
+              shellHook = "zellij";
             };
 
         };
