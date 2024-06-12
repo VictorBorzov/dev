@@ -47,7 +47,10 @@
               pkgs.fsautocomplete
               pkgs.marksman
             ];
-            shellHook = "zellij";
+            shellHook = ''
+              nix flake init -t gitlab:victorborzov/templates#helix
+              zellij
+            '';
           };
           nix = pkgs.mkShell {
             buildInputs = [
@@ -58,9 +61,28 @@
               pkgs.nixpkgs-fmt
               pkgs.marksman
             ];
-            shellHook = "zellij";
+            shellHook = ''
+              nix flake init -t gitlab:victorborzov/templates#helix
+              zellij
+            '';
           };
-          go = pkgs.mkShell { buildInputs = [ pkgs.go pkgs.gopls pkgs.go-tools pkgs.gotools pkgs.delve pkgs.marksman self.packages.${system}.helix self.packages.${system}.zellij self.packages.${system}.lf ]; shellHook = "zellij"; };
+          go = pkgs.mkShell {
+            buildInputs = [
+              pkgs.go
+              pkgs.gopls
+              pkgs.go-tools
+              pkgs.gotools
+              pkgs.delve
+              pkgs.marksman
+              self.packages.${system}.helix
+              self.packages.${system}.zellij
+              self.packages.${system}.lf
+            ];
+            shellHook = ''
+              nix flake init -t gitlab:victorborzov/templates#helix
+              zellij
+            '';
+          };
           haskell = pkgs.mkShell {
             buildInputs = [
               pkgs.haskellPackages.cabal-install
@@ -71,23 +93,14 @@
               self.packages.${system}.lf
               pkgs.marksman
             ];
-            shellHook = "zellij";
+            shellHook = ''
+              nix flake init -t gitlab:victorborzov/templates#helix
+              zellij
+            '';
           };
 
         };
         formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
-
-        templates = {
-          dotnet = {
-            path = ./templates/dotnet;
-            description = "Dotnet application template";
-          };
-          nix = {
-            path = ./templates/nix;
-            description = "nix workspace template";
-          };
-        };
-
       }
     );
 }
