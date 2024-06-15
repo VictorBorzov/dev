@@ -6,15 +6,14 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs =
-    { self
-    , nixpkgs
-    , flake-utils
-    , ...
-    }:
+  outputs = {
+    self,
+    nixpkgs,
+    flake-utils,
+    ...
+  }:
     flake-utils.lib.eachDefaultSystem (
-      system:
-      let
+      system: let
         pkgs = import nixpkgs {
           inherit system;
         };
@@ -87,7 +86,7 @@
         # Custom Zellij package that is aware of the custom config
         zellijWrapper = pkgs.stdenv.mkDerivation {
           name = "zellij-wrapper";
-          buildInputs = [ pkgs.makeWrapper ];
+          buildInputs = [pkgs.makeWrapper];
           dontUnpack = true;
           dontBuild = true;
           installPhase = ''
@@ -96,8 +95,7 @@
               --add-flags "--config ${configFile}"
           '';
         };
-      in
-      {
+      in {
         packages.default = zellijWrapper;
         apps.default = {
           type = "app";

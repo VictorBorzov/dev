@@ -7,19 +7,18 @@
     emacs-overlay.url = "github:nix-community/emacs-overlay";
   };
 
-  outputs =
-    { self
-    , nixpkgs
-    , flake-utils
-    , emacs-overlay
-    , ...
-    }:
+  outputs = {
+    self,
+    nixpkgs,
+    flake-utils,
+    emacs-overlay,
+    ...
+  }:
     flake-utils.lib.eachDefaultSystem (
-      system:
-      let
+      system: let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ emacs-overlay.overlay ];
+          overlays = [emacs-overlay.overlay];
         };
 
         # Org file containing Emacs configuration
@@ -46,7 +45,7 @@
         # Custom Emacs package that uses the Org config
         emacsWrapper = pkgs.stdenv.mkDerivation {
           name = "emacs-wrapper";
-          buildInputs = [ pkgs.makeWrapper customEmacs ];
+          buildInputs = [pkgs.makeWrapper customEmacs];
           dontUnpack = true;
           dontBuild = true;
           installPhase = ''
@@ -55,8 +54,7 @@
               --add-flags "-q --eval '(org-babel-load-file \"${emacsConfigOrg}\")'"
           '';
         };
-      in
-      {
+      in {
         packages.default = emacsWrapper;
         apps.default = {
           type = "app";

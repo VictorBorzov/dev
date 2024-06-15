@@ -4,52 +4,55 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    helixWrapper.url = "gitlab:victorborzov/dev?dir=helix";
-    zellijWrapper.url = "gitlab:victorborzov/dev?dir=zellij";
-    lfWrapper.url = "gitlab:victorborzov/dev?dir=lf";
   };
 
-  outputs =
-    { self
-    , nixpkgs
-    , flake-utils
-    , helixWrapper
-    , zellijWrapper
-    , lfWrapper
-    , ...
-    }:
+  outputs = {
+    nixpkgs,
+    flake-utils,
+    ...
+  }:
     flake-utils.lib.eachDefaultSystem (
-      system:
-      let
-        pkgs = import nixpkgs { inherit system; };
-      in
-      {
+      system: let
+        pkgs = import nixpkgs {inherit system;};
+        helixWrapper = import ./helix {inherit pkgs;};
+        zellijWrapper = import ./zellij {inherit pkgs;};
+        lfWrapper = import ./lf {inherit pkgs;};
+      in {
         packages = {
-          helix = helixWrapper.packages.${system}.default;
-          zellij = zellijWrapper.packages.${system}.default;
-          lf = lfWrapper.packages.${system}.default;
+          helix = helixWrapper;
+          zellij = zellijWrapper;
+          lf = lfWrapper;
         };
         apps = {
-          helix = helixWrapper.apps.${system}.default;
-          zellij = zellijWrapper.apps.${system}.default;
-          lf = lfWrapper.apps.${system}.default;
+          helix = {
+            type = "app";
+            program = "${helixWrapper}/bin/hx";
+          };
+          zellij = {
+            type = "app";
+            program = "${zellijWrapper}/bin/hx";
+          };
+          lf = {
+            type = "app";
+            program = "${lfWrapper}/bin/hx";
+          };
         };
 
         devShells = {
           default = pkgs.mkShell {
             buildInputs = [
-              self.packages.${system}.helix
-              self.packages.${system}.zellij
-              self.packages.${system}.lf
+              helixWrapper
+              zellijWrapper
+              lfWrapper
               pkgs.marksman
             ];
           };
 
           dotnet = pkgs.mkShell {
             buildInputs = [
-              self.packages.${system}.helix
-              self.packages.${system}.zellij
-              self.packages.${system}.lf
+              helixWrapper
+              zellijWrapper
+              lfWrapper
               pkgs.dotnet-sdk_8
               pkgs.netcoredbg
               pkgs.omnisharp-roslyn
@@ -63,9 +66,9 @@
           };
           nix = pkgs.mkShell {
             buildInputs = [
-              self.packages.${system}.helix
-              self.packages.${system}.zellij
-              self.packages.${system}.lf
+              helixWrapper
+              zellijWrapper
+              lfWrapper
               pkgs.nil
               pkgs.alejandra
               pkgs.marksman
@@ -83,9 +86,9 @@
               pkgs.gotools
               pkgs.delve
               pkgs.marksman
-              self.packages.${system}.helix
-              self.packages.${system}.zellij
-              self.packages.${system}.lf
+              helixWrapper
+              zellijWrapper
+              lfWrapper
             ];
             shellHook = ''
               nix flake init -t gitlab:victorborzov/templates#helix
@@ -97,9 +100,9 @@
               pkgs.haskellPackages.cabal-install
               pkgs.haskellPackages.haskell-language-server
               pkgs.ghc
-              self.packages.${system}.helix
-              self.packages.${system}.zellij
-              self.packages.${system}.lf
+              helixWrapper
+              zellijWrapper
+              lfWrapper
               pkgs.marksman
             ];
             shellHook = ''
@@ -114,9 +117,9 @@
               pkgs.clippy
               pkgs.rustfmt
               pkgs.rust-analyzer
-              self.packages.${system}.helix
-              self.packages.${system}.zellij
-              self.packages.${system}.lf
+              helixWrapper
+              zellijWrapper
+              lfWrapper
               pkgs.marksman
             ];
             shellHook = ''

@@ -6,15 +6,14 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs =
-    { self
-    , nixpkgs
-    , flake-utils
-    , ...
-    }:
+  outputs = {
+    self,
+    nixpkgs,
+    flake-utils,
+    ...
+  }:
     flake-utils.lib.eachDefaultSystem (
-      system:
-      let
+      system: let
         pkgs = import nixpkgs {
           inherit system;
         };
@@ -72,7 +71,7 @@
 
         lfWrapper = pkgs.stdenv.mkDerivation {
           name = "lf-wrapper";
-          buildInputs = [ pkgs.makeWrapper ];
+          buildInputs = [pkgs.makeWrapper];
           dontUnpack = true;
           dontBuild = true;
           installPhase = ''
@@ -81,8 +80,7 @@
               --add-flags "-config ${configFile}"
           '';
         };
-      in
-      {
+      in {
         packages.default = lfWrapper;
         apps.default = {
           type = "app";
