@@ -30,11 +30,11 @@
           };
           zellij = {
             type = "app";
-            program = "${zellijWrapper}/bin/hx";
+            program = "${zellijWrapper}/bin/zellij";
           };
           lf = {
             type = "app";
-            program = "${lfWrapper}/bin/hx";
+            program = "${lfWrapper}/bin/lf";
           };
         };
 
