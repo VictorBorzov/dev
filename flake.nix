@@ -9,8 +9,17 @@
     lfWrapper.url = "gitlab:victorborzov/dev?dir=lf";
   };
 
-  outputs = { self, nixpkgs, flake-utils, helixWrapper, zellijWrapper, lfWrapper, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    { self
+    , nixpkgs
+    , flake-utils
+    , helixWrapper
+    , zellijWrapper
+    , lfWrapper
+    , ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = import nixpkgs { inherit system; };
       in
@@ -58,7 +67,7 @@
               self.packages.${system}.zellij
               self.packages.${system}.lf
               pkgs.nil
-              pkgs.nixpkgs-fmt
+              pkgs.alejandra
               pkgs.marksman
             ];
             shellHook = ''
@@ -115,9 +124,8 @@
               zellij
             '';
           };
-
         };
-        formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
+        formatter = pkgs.alejandra;
       }
     );
 }

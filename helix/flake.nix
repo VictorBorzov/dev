@@ -6,15 +6,21 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    { self
+    , nixpkgs
+    , flake-utils
+    , ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = import nixpkgs {
           inherit system;
         };
 
         configFile = pkgs.writeText "helix-config.toml" ''
-          theme = "rose_pine_moon"
+          theme = "gruvbox"
           [editor]
           auto-save = true
           bufferline = "multiple"
@@ -74,7 +80,7 @@
           [keys.normal.space]
           F = ["file_picker"]
           f = ["file_picker_in_current_buffer_directory"]
-  '';
+        '';
 
         helixWrapper = pkgs.stdenv.mkDerivation {
           name = "helix-wrapper";
@@ -87,7 +93,6 @@
               --add-flags "--config ${configFile}"
           '';
         };
-
       in
       {
         packages.default = helixWrapper;
@@ -99,4 +104,3 @@
       }
     );
 }
-

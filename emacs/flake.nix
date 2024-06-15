@@ -7,8 +7,15 @@
     emacs-overlay.url = "github:nix-community/emacs-overlay";
   };
 
-  outputs = { self, nixpkgs, flake-utils, emacs-overlay, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    { self
+    , nixpkgs
+    , flake-utils
+    , emacs-overlay
+    , ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = import nixpkgs {
           inherit system;
@@ -31,9 +38,10 @@
         '';
 
         # Custom Emacs package that includes magit
-        customEmacs = pkgs.emacsWithPackages (epkgs: with epkgs.melpaPackages; [
-          magit  # Ensure Magit is correctly referenced
-        ]);
+        customEmacs = pkgs.emacsWithPackages (epkgs:
+          with epkgs.melpaPackages; [
+            magit # Ensure Magit is correctly referenced
+          ]);
 
         # Custom Emacs package that uses the Org config
         emacsWrapper = pkgs.stdenv.mkDerivation {
@@ -47,7 +55,6 @@
               --add-flags "-q --eval '(org-babel-load-file \"${emacsConfigOrg}\")'"
           '';
         };
-
       in
       {
         packages.default = emacsWrapper;

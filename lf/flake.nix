@@ -6,26 +6,31 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    { self
+    , nixpkgs
+    , flake-utils
+    , ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = import nixpkgs {
           inherit system;
         };
 
-        previewer = 
-          pkgs.writeShellScriptBin "pv.sh" ''
+        previewer = pkgs.writeShellScriptBin "pv.sh" ''
           file=$1
           w=$2
           h=$3
           x=$4
           y=$5
-          
+
           if [[ "$( ${pkgs.file}/bin/file -Lb --mime-type "$file")" =~ ^image ]]; then
               ${pkgs.kitty}/bin/kitty +kitten icat --silent --stdin no --transfer-mode file --place "''${w}x''${h}@''${x}x''${y}" "$file" < /dev/null > /dev/tty
               exit 1
           fi
-          
+
           ${pkgs.pistol}/bin/pistol "$file"
         '';
         cleaner = pkgs.writeShellScriptBin "clean.sh" ''
@@ -37,7 +42,7 @@
           set icons
           set ignorecase
           set preview
-          
+
           cmd dragon-out %${pkgs.xdragon}/bin/xdragon -a -x "$fx"
           cmd editor-open $$EDITOR $f
           cmd mkdir ''${{
@@ -45,8 +50,8 @@
             read DIR
             mkdir $DIR
           }}
-          
-          
+
+
           map . set hidden!
           map <enter> open
           map V ${pkgs.bat}/bin/bat --paging=always "$f"
@@ -60,11 +65,11 @@
           map gh cd
           map g~ cd
           map o
-          
+
           set cleaner ${cleaner}/bin/clean.sh
           set previewer ${previewer}/bin/pv.sh
         '';
-      
+
         lfWrapper = pkgs.stdenv.mkDerivation {
           name = "lf-wrapper";
           buildInputs = [ pkgs.makeWrapper ];
@@ -75,7 +80,7 @@
             makeWrapper ${pkgs.lf}/bin/lf $out/bin/lf \
               --add-flags "-config ${configFile}"
           '';
-       };
+        };
       in
       {
         packages.default = lfWrapper;
@@ -87,4 +92,3 @@
       }
     );
 }
-
