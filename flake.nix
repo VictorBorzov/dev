@@ -98,6 +98,23 @@
               zellij
             '';
           };
+          rust = pkgs.mkShell {
+            buildInputs = [
+              pkgs.rustc
+              pkgs.cargo
+              pkgs.clippy
+              pkgs.rustfmt
+              pkgs.rust-analyzer
+              self.packages.${system}.helix
+              self.packages.${system}.zellij
+              self.packages.${system}.lf
+              pkgs.marksman
+            ];
+            shellHook = ''
+              nix flake init -t gitlab:victorborzov/templates#helix
+              zellij
+            '';
+          };
 
         };
         formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
