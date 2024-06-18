@@ -1,6 +1,6 @@
 {pkgs}: let
   # Basic configuration for Zellij, this might include keybindings, plugins, etc.
-  configFile = pkgs.writeText "zellij-config.yaml" ''
+  configFile = pkgs.writeText "zellij-config.kdl" ''
     themes {
      rose-pine-dawn {
       bg "#faf4ed"
