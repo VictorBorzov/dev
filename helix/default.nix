@@ -1,6 +1,7 @@
 {pkgs}: let
   configFile = pkgs.writeText "helix-config.toml" ''
     theme = "gruvbox"
+
      [editor]
      auto-save = true
      bufferline = "multiple"
@@ -53,6 +54,8 @@
      space = "all"
      tab = "all"
 
+     [keys.insert]
+       "C-[" = "normal_mode"
      [keys.normal]
      C-j = ["extend_to_line_bounds", "delete_selection", "paste_after"]
      C-k = ["extend_to_line_bounds", "delete_selection", "move_line_up", "paste_before"]

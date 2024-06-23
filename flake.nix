@@ -45,6 +45,7 @@
               zellijWrapper
               lfWrapper
               pkgs.marksman
+              pkgs.ltex-ls
             ];
           };
 
