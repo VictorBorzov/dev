@@ -6,17 +6,13 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = {
-    nixpkgs,
-    flake-utils,
-    ...
-  }:
-    flake-utils.lib.eachDefaultSystem (
-      system: let
-        pkgs = import nixpkgs {inherit system;};
-        helixWrapper = import ./helix {inherit pkgs;};
-        zellijWrapper = import ./zellij {inherit pkgs;};
-        lfWrapper = import ./lf {inherit pkgs;};
+  outputs = { nixpkgs, flake-utils, ... }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = import nixpkgs { inherit system; };
+        helixWrapper = import ./helix { inherit pkgs; };
+        zellijWrapper = import ./zellij { inherit pkgs; };
+        lfWrapper = import ./lf { inherit pkgs; };
       in {
         packages = {
           helix = helixWrapper;
@@ -62,6 +58,7 @@
             ];
             shellHook = ''
               nix flake init -t gitlab:victorborzov/templates#helix
+              grep "helix" .gitignore || echo "/.helix" >> .gitignore
               zellij
             '';
           };
@@ -76,6 +73,7 @@
             ];
             shellHook = ''
               nix flake init -t gitlab:victorborzov/templates#helix
+              grep "helix" .gitignore || echo "/.helix" >> .gitignore
               zellij
             '';
           };
@@ -93,6 +91,7 @@
             ];
             shellHook = ''
               nix flake init -t gitlab:victorborzov/templates#helix
+              grep "helix" .gitignore || echo "/.helix" >> .gitignore
               zellij
             '';
           };
@@ -108,6 +107,7 @@
             ];
             shellHook = ''
               nix flake init -t gitlab:victorborzov/templates#helix
+              grep "helix" .gitignore || echo "/.helix" >> .gitignore
               zellij
             '';
           };
@@ -125,11 +125,11 @@
             ];
             shellHook = ''
               nix flake init -t gitlab:victorborzov/templates#helix
+              grep "helix" .gitignore || echo "/.helix" >> .gitignore
               zellij
             '';
           };
         };
         formatter = pkgs.alejandra;
-      }
-    );
+      });
 }
