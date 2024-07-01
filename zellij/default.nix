@@ -60,8 +60,8 @@
 
     }
     theme "gruvbox-dark"
-    // default_layout "compact"
-    // pane_frames false
+    default_layout "compact"
+    pane_frames false
   '';
 in
   # Custom Zellij package that is aware of the custom config

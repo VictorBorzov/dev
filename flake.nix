@@ -6,130 +6,135 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = import nixpkgs { inherit system; };
-        helixWrapper = import ./helix { inherit pkgs; };
-        zellijWrapper = import ./zellij { inherit pkgs; };
-        lfWrapper = import ./lf { inherit pkgs; };
-      in {
-        packages = {
-          helix = helixWrapper;
-          zellij = zellijWrapper;
-          lf = lfWrapper;
+  outputs = {
+    nixpkgs,
+    flake-utils,
+    ...
+  }:
+    flake-utils.lib.eachDefaultSystem (system: let
+      pkgs = import nixpkgs {inherit system;};
+      helixWrapper = import ./helix {inherit pkgs;};
+      zellijWrapper = import ./zellij {inherit pkgs;};
+      lfWrapper = import ./lf {inherit pkgs;};
+      basics = [
+        helixWrapper
+        zellijWrapper
+        lfWrapper
+        pkgs.marksman
+        pkgs.ltex-ls
+      ];
+      basicHook = ''
+        nix flake init -t gitlab:victorborzov/templates#helix
+        grep "helix" .gitignore || echo "/.helix" >> .gitignore
+        zellij
+      '';
+    in {
+      packages = {
+        helix = helixWrapper;
+        zellij = zellijWrapper;
+        lf = lfWrapper;
+      };
+      apps = {
+        helix = {
+          type = "app";
+          program = "${helixWrapper}/bin/hx";
         };
-        apps = {
-          helix = {
-            type = "app";
-            program = "${helixWrapper}/bin/hx";
-          };
-          zellij = {
-            type = "app";
-            program = "${zellijWrapper}/bin/zellij";
-          };
-          lf = {
-            type = "app";
-            program = "${lfWrapper}/bin/lf";
-          };
+        zellij = {
+          type = "app";
+          program = "${zellijWrapper}/bin/zellij";
+        };
+        lf = {
+          type = "app";
+          program = "${lfWrapper}/bin/lf";
+        };
+      };
+
+      devShells = {
+        default = pkgs.mkShell {
+          buildInputs = basics;
         };
 
-        devShells = {
-          default = pkgs.mkShell {
-            buildInputs = [
-              helixWrapper
-              zellijWrapper
-              lfWrapper
-              pkgs.marksman
-              pkgs.ltex-ls
-            ];
-          };
-
-          dotnet = pkgs.mkShell {
-            buildInputs = [
-              helixWrapper
-              zellijWrapper
-              lfWrapper
+        dotnet = pkgs.mkShell {
+          buildInputs =
+            basics
+            ++ [
               pkgs.dotnet-sdk_8
               pkgs.netcoredbg
               pkgs.omnisharp-roslyn
               pkgs.fsautocomplete
-              pkgs.marksman
             ];
-            shellHook = ''
-              nix flake init -t gitlab:victorborzov/templates#helix
-              grep "helix" .gitignore || echo "/.helix" >> .gitignore
-              zellij
-            '';
-          };
-          nix = pkgs.mkShell {
-            buildInputs = [
-              helixWrapper
-              zellijWrapper
-              lfWrapper
+          shellHook = basicHook;
+        };
+        nix = pkgs.mkShell {
+          buildInputs =
+            basics
+            ++ [
               pkgs.nil
               pkgs.alejandra
-              pkgs.marksman
             ];
-            shellHook = ''
-              nix flake init -t gitlab:victorborzov/templates#helix
-              grep "helix" .gitignore || echo "/.helix" >> .gitignore
-              zellij
-            '';
-          };
-          go = pkgs.mkShell {
-            buildInputs = [
+          shellHook = basicHook;
+        };
+        go = pkgs.mkShell {
+          buildInputs =
+            basics
+            ++ [
               pkgs.go
               pkgs.gopls
               pkgs.go-tools
               pkgs.gotools
               pkgs.delve
-              pkgs.marksman
-              helixWrapper
-              zellijWrapper
-              lfWrapper
             ];
-            shellHook = ''
-              nix flake init -t gitlab:victorborzov/templates#helix
-              grep "helix" .gitignore || echo "/.helix" >> .gitignore
-              zellij
-            '';
-          };
-          haskell = pkgs.mkShell {
-            buildInputs = [
+          shellHook = basicHook;
+        };
+        ts = pkgs.mkShell {
+          buildInputs =
+            basics
+            ++ [
+              pkgs.typescript
+              pkgs.nodePackages.typescript-language-server
+            ];
+          shellHook = basicHook;
+        };
+        haskell = pkgs.mkShell {
+          buildInputs =
+            basics
+            ++ [
               pkgs.haskellPackages.cabal-install
               pkgs.haskellPackages.haskell-language-server
               pkgs.ghc
-              helixWrapper
-              zellijWrapper
-              lfWrapper
-              pkgs.marksman
             ];
-            shellHook = ''
-              nix flake init -t gitlab:victorborzov/templates#helix
-              grep "helix" .gitignore || echo "/.helix" >> .gitignore
-              zellij
-            '';
-          };
-          rust = pkgs.mkShell {
-            buildInputs = [
+          shellHook = basicHook;
+        };
+        rust = pkgs.mkShell {
+          buildInputs =
+            basics
+            ++ [
               pkgs.rustc
               pkgs.cargo
               pkgs.clippy
               pkgs.rustfmt
               pkgs.rust-analyzer
-              helixWrapper
-              zellijWrapper
-              lfWrapper
-              pkgs.marksman
             ];
-            shellHook = ''
-              nix flake init -t gitlab:victorborzov/templates#helix
-              grep "helix" .gitignore || echo "/.helix" >> .gitignore
-              zellij
-            '';
-          };
+          shellHook = basicHook;
         };
-        formatter = pkgs.alejandra;
-      });
+        cpp = pkgs.mkShell {
+          buildInputs =
+            basics
+            ++ [
+              pkgs.clang-tools
+            ];
+          shellHook = basicHook;
+        };
+        tex = pkgs.mkShell {
+          buildInputs =
+            basics
+            ++  [
+              pkgs.texlive.combined.scheme-full
+              pkgs.texlab
+            ];
+          shellHook = basicHook;
+        };
+      };
+      formatter = pkgs.alejandra;
+    });
 }
