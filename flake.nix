@@ -4,11 +4,13 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
   };
 
   outputs = {
     nixpkgs,
     flake-utils,
+    emacs-overlay,
     ...
   }:
     flake-utils.lib.eachDefaultSystem (system: let
@@ -16,11 +18,12 @@
       helixWrapper = import ./helix {inherit pkgs;};
       zellijWrapper = import ./zellij {inherit pkgs;};
       lfWrapper = import ./lf {inherit pkgs;};
+      emacsWrapper = import ./emacs {inherit nixpkgs system emacs-overlay;};
       basics = [
         helixWrapper
         zellijWrapper
         lfWrapper
-        pkgs.marksman
+        pkgs.markdown-oxide
         pkgs.ltex-ls
       ];
       basicHook = ''
@@ -33,6 +36,7 @@
         helix = helixWrapper;
         zellij = zellijWrapper;
         lf = lfWrapper;
+        emacs = emacsWrapper;
       };
       apps = {
         helix = {
@@ -46,6 +50,10 @@
         lf = {
           type = "app";
           program = "${lfWrapper}/bin/lf";
+        };
+        emacs = {
+          type = "app";
+          program = "${emacsWrapper}/bin/emacs";
         };
       };
 
@@ -128,7 +136,7 @@
         tex = pkgs.mkShell {
           buildInputs =
             basics
-            ++  [
+            ++ [
               pkgs.texlive.combined.scheme-full
               pkgs.texlab
             ];
