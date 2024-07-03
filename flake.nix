@@ -27,8 +27,6 @@
         pkgs.ltex-ls
       ];
       basicHook = ''
-        nix flake init -t gitlab:victorborzov/templates#helix
-        grep "helix" .gitignore || echo "/.helix" >> .gitignore
         zellij
       '';
     in {
