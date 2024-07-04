@@ -48,6 +48,11 @@ in (pkgs.emacsWithPackagesFromUsePackage {
   # Optionally provide extra packages not in the configuration file.
   extraEmacsPackages = epkgs: [
     epkgs.org-roam
+    epkgs.org-roam-ui
+    epkgs.eglot
+    # epkgs.markdown-mode
+    # epkgs.nix-mode
+    # epkgs.rust-mode
     epkgs.doom-themes
   ];
 })

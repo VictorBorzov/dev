@@ -1,45 +1,23 @@
-Super duper config
+* Basics
 
-* Bacics
 #+begin_src emacs-lisp :tangle yes
-  (defun sort-words (reverse beg end)
-    "Sort words in region alphabetically, in REVERSE if negative.
-      Prefixed with negative \\[universal-argument], sorts in reverse.
-
-      The variable `sort-fold-case' determines whether alphabetic case
-      affects the sort order.
-
-      See `sort-regexp-fields'."
-    (interactive "*P\nr")
-    (sort-regexp-fields reverse "\\w+" "\\&" beg end))
-
-  (add-hook 'shell-mode-hook 'compilation-shell-minor-mode)
-
-  (setq inhibit-startup-message t)
-
-  (toggle-scroll-bar -1)
-
-  (scroll-bar-mode -1)
-
-  (tool-bar-mode -1)
-
   (menu-bar-mode -1)
-
+  (tool-bar-mode -1)
   (show-paren-mode 1)
-
   (delete-selection-mode 1)
-
   (global-hl-line-mode +1)
 
   (global-display-line-numbers-mode t)
   (defun my-relative-line-numbers-hook ()
     (setq display-line-numbers 'relative))
-
   (add-hook 'display-line-numbers-mode-hook 'my-relative-line-numbers-hook)
 
   (setq backup-directory-alist '(("." . "~/.emacs_saves")))
-  (setq vc-make-backup-files t)
 
+  (setq use-short-answers t)
+
+  (setq ring-bell-function 'ignore)
+  (setq-default indent-tabs-mode nil)
 
   (global-visual-line-mode 1)
 
@@ -60,12 +38,6 @@ Super duper config
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
   (setq reftex-plug-into-AUCTeX t)
-#+end_src
-
-* Dotnet
-
-#+begin_src emacs-lisp :tangle yes
-  (setq gud-netcoredbg-command-name "netcoredbg --interpreter=vscode")
 #+end_src
 
 * Orgmode
@@ -146,14 +118,114 @@ Super duper config
   (setq org-confirm-babel-evaluate nil)
 #+end_src
 
+** Task status for Status bars
+
+#+begin_src emacs-lisp :tangle yes
+  (defun my-org-timer-remaining-time ()
+    "Return the remaining time of the current org-timer as a formatted string."
+    (if (and org-timer-countdown-timer 
+             (timerp org-timer-countdown-timer))
+        (let ((time-left (- (time-to-seconds (timer--time org-timer-countdown-timer))
+                            (time-to-seconds (current-time)))))
+          (if (> time-left 0)
+              (format-seconds "%h:%02m" time-left)
+            "Time's up!"))
+      "No timer set"))
+
+  ;; If font is loaded before frame creation it is reset
+  (add-to-list 'after-make-frame-functions
+               (lambda (frame)
+                 (select-frame frame)
+                 (set-face-attribute 'default nil :font "Iosevka Nerd Font-9")))
+#+end_src
+
 * Themes
 
 #+begin_src emacs-lisp :tangle yes
   (load-theme 'doom-gruvbox t)
-  (doom-themes-visual-bell-config))
-  (set-face-attribute 'default nil
-    :family "Iosevka Nerd Font"
-    :width 'normal
-    :weight 'normal)
+  (set-face-attribute 'default nil :font "Iosevka Nerd Font-18")
+#+end_src
+
+* Org-Roam
+
+#+begin_src emacs-lisp :tangle yes
+  ;; Initialize variables
+  (setq org-roam-v2-ack t)
+  (setq org-roam-directory "~/sync/orgmode/library")
+  (setq org-roam-dailies-directory "journal/")
+  (setq org-roam-completion-everywhere t)
+
+  ;; Key bindings
+  (global-set-key (kbd "C-c n l") 'org-roam-buffer-toggle)
+  (global-set-key (kbd "C-c n f") 'org-roam-node-find)
+  (global-set-key (kbd "C-c n i") 'org-roam-node-insert)
+  (define-key org-mode-map (kbd "C-M-i") 'completion-at-point)
+
+  ;; Load and configure org-roam-dailies
+  (require 'org-roam-dailies) ;; Ensure the keymap is available
+
+  ;; Define dailies map if not already defined
+  (unless (boundp 'org-roam-dailies-map)
+    (define-prefix-command 'org-roam-dailies-map))
+
+  (define-key org-roam-dailies-map (kbd "Y") 'org-roam-dailies-capture-yesterday)
+  (define-key org-roam-dailies-map (kbd "T") 'org-roam-dailies-capture-tomorrow)
+
+  ;; Bind the dailies map to a key
+  (global-set-key (kbd "C-c n d") org-roam-dailies-map)
+
+  ;; Activate org-roam database autosync
+  (org-roam-db-autosync-mode)
+#+end_src
+
+
+** Org-Roam UI
+
+#+begin_src emacs-lisp :tangle yes
+  (setq org-roam-ui-sync-theme t)
+  (setq org-roam-ui-follow t)
+  (setq org-roam-ui-update-on-save t)
+  (setq org-roam-ui-open-on-start t)
+#+end_src
+
+* Languages
+
+** Nix
+
+#+begin_src emacs-lisp :tangle yes
+  ;; Ensure nix-mode is loaded
+  (autoload 'nix-mode "nix-mode" "Major mode for editing Nix expressions." t)
+  (add-hook 'nix-mode-hook 'eglot-ensure)
+#+end_src
+
+** Eglot
+
+#+begin_src emacs-lisp :tangle no
+  (add-to-list 'eglot-server-programs '(nix-mode . ("nil"))) 
+#+end_src
+
+** Rust
+
+#+begin_src emacs-lisp :tangle yes
+  ;; Auto mode setups
+  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
+  (add-hook 'rust-ts-mode-hook #'eglot-ensure)
+  ;; Rust-ts mode settings
+  (setq rust-ts-mode-indent-offset 2)
+#+end_src
+
+** Markdown
+
+#+begin_src emacs-lisp :tangle yes
+  ;; Setup for markdown-mode
+  (autoload 'markdown-mode "markdown-mode"
+    "Major mode for editing Markdown files" t)
+  (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+#+end_src
+
+** Dotnet
+
+#+begin_src emacs-lisp :tangle yes
+  (setq gud-netcoredbg-command-name "netcoredbg --interpreter=vscode")
 #+end_src
 
