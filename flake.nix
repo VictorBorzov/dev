@@ -20,14 +20,10 @@
       lfWrapper = import ./lf {inherit pkgs;};
       emacsWrapper = import ./emacs {inherit nixpkgs system emacs-overlay;};
       basics = [
-        helixWrapper
-        zellijWrapper
-        lfWrapper
-        pkgs.marksman
-        pkgs.ltex-ls
+        emacsWrapper
       ];
       basicHook = ''
-        zellij
+        emacs -nw .
       '';
     in {
       packages = {
