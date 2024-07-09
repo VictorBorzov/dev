@@ -23,7 +23,7 @@
         helixWrapper
         zellijWrapper
         lfWrapper
-        pkgs.markdown-oxide
+        pkgs.marksman
         pkgs.ltex-ls
       ];
       basicHook = ''
