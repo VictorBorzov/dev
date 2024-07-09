@@ -146,6 +146,11 @@
   (set-face-attribute 'default nil :font "Iosevka Nerd Font-18")
 #+end_src
 
+Nix modeline to show nix shells:
+#+begin_src emacs-lisp :tangle yes
+  (nix-modeline-mode)
+#+end_src
+
 * Org-Roam
 
 #+begin_src emacs-lisp :tangle yes
@@ -188,3 +193,28 @@
   (setq org-roam-ui-open-on-start t)
 #+end_src
 
+* Languages
+
+** Flycheck
+#+begin_src emacs-lisp :tangle yes
+  (global-flycheck-mode +1)
+#+end_src
+
+** Eglot
+
+#+begin_src emacs-lisp :tangle yes
+  (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1)))
+#+end_src
+
+** Rust
+
+#+begin_src emacs-lisp :tangle yes
+  (setq rustic-lsp-client 'eglot)
+  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rustic-mode))
+#+end_src
+
+** Nix
+
+#+begin_src emacs-lisp :tangle yes
+  (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
+#+end_src

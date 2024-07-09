@@ -53,5 +53,7 @@ in (pkgs.emacsWithPackagesFromUsePackage {
     epkgs.rustic
     epkgs.tree-sitter-langs
     epkgs.doom-themes
+    epkgs.nix-modeline
+    epkgs.nix-mode
   ];
 })
