@@ -50,9 +50,8 @@ in (pkgs.emacsWithPackagesFromUsePackage {
     epkgs.org-roam
     epkgs.org-roam-ui
     epkgs.eglot
-    # epkgs.markdown-mode
-    # epkgs.nix-mode
-    # epkgs.rust-mode
+    epkgs.rustic
+    epkgs.tree-sitter-langs
     epkgs.doom-themes
   ];
 })
