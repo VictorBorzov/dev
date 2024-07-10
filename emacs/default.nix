@@ -47,13 +47,11 @@ in (pkgs.emacsWithPackagesFromUsePackage {
 
   # Optionally provide extra packages not in the configuration file.
   extraEmacsPackages = epkgs: [
+    epkgs.doom-themes
     epkgs.org-roam
     epkgs.org-roam-ui
     epkgs.eglot
-    epkgs.rustic
-    epkgs.tree-sitter-langs
-    epkgs.doom-themes
-    epkgs.nix-modeline
+    epkgs.rust-mode
     epkgs.nix-mode
   ];
 })

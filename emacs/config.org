@@ -136,7 +136,7 @@
   (add-to-list 'after-make-frame-functions
                (lambda (frame)
                  (select-frame frame)
-                 (set-face-attribute 'default nil :font "Iosevka Nerd Font-9")))
+                 (set-face-attribute 'default nil :font "Iosevka Nerd Font-18")))
 #+end_src
 
 * Themes
@@ -144,11 +144,6 @@
 #+begin_src emacs-lisp :tangle yes
   (load-theme 'doom-gruvbox t)
   (set-face-attribute 'default nil :font "Iosevka Nerd Font-18")
-#+end_src
-
-Nix modeline to show nix shells:
-#+begin_src emacs-lisp :tangle yes
-  (nix-modeline-mode)
 #+end_src
 
 * Org-Roam
@@ -196,7 +191,8 @@ Nix modeline to show nix shells:
 * Languages
 
 ** Flycheck
-#+begin_src emacs-lisp :tangle yes
+
+#+begin_src emacs-lisp :tangle no
   (global-flycheck-mode +1)
 #+end_src
 
@@ -204,13 +200,26 @@ Nix modeline to show nix shells:
 
 #+begin_src emacs-lisp :tangle yes
   (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1)))
+  (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
+#+end_src
+
+** Company-mode
+
+#+begin_src emacs-lisp :tangle no
+  (add-hook 'after-init-hook 'global-company-mode)
 #+end_src
 
 ** Rust
 
+Requires =eglot= and =rust-mode= packages.
+
 #+begin_src emacs-lisp :tangle yes
-  (setq rustic-lsp-client 'eglot)
-  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rustic-mode))
+  (require 'eglot)
+  (add-hook 'rust-mode-hook 'eglot-ensure)
+
+  (require 'rust-mode)
+  (setq rust-mode-treesitter-derive t)
+  (setq rust-format-on-save t)  
 #+end_src
 
 ** Nix

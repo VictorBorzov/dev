@@ -21,6 +21,7 @@
       emacsWrapper = import ./emacs {inherit nixpkgs system emacs-overlay;};
       basics = [
         emacsWrapper
+        pkgs.ispell
       ];
       basicHook = ''
         emacs -nw .
