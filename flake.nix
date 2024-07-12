@@ -139,20 +139,5 @@
         };
       };
       formatter = pkgs.alejandra;
-
-      templates = {
-        dotnet = {
-          path = ./templates/dotnet;
-          description = "Dotnet application template";
-        };
-        rust = {
-          path = ./templates/rust;
-          description = "Rust application template";
-        };
-        helix = {
-          path = ./templates/helix;
-          description = "Helix workspace template";
-        };
-      };
     });
 }
