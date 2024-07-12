@@ -16,13 +16,23 @@
     flake-utils.lib.eachDefaultSystem (
       system: let
         pkgs = import nixpkgs {inherit system;};
+        appName = "guessing_game";
+        app = pkgs.rustPlatform.buildRustPackage {
+          pname = appName;
+          version = "0.1.0";
+          src = ./.;
+          cargoLock = {lockFile = ./Cargo.lock;};
+        };
       in {
         packages = {
-          default = pkgs.rustPlatform.buildRustPackage {
-            pname = "app_name";
-            version = "0.1.0";
-            src = ./.;
-            cargoLock = {lockFile = ./Cargo.lock;};
+          default = app;
+          docker = pkgs.dockerTools.buildLayeredImage {
+            name = appName;
+            tag = "latest";
+            config = {
+              Cmd = ["${app}/${appName}"];
+              WorkingDir = "/root";
+            };
           };
         };
 
