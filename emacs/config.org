@@ -198,7 +198,7 @@
 
 ** Eglot
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp :tangle no
   (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1)))
   (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
 #+end_src
@@ -214,8 +214,8 @@
 Requires =eglot= and =rust-mode= packages.
 
 #+begin_src emacs-lisp :tangle yes
-  (require 'eglot)
-  (add-hook 'rust-mode-hook 'eglot-ensure)
+  ; (require 'eglot)
+  ; (add-hook 'rust-mode-hook 'eglot-ensure)
 
   (require 'rust-mode)
   (setq rust-mode-treesitter-derive t)

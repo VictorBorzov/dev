@@ -50,7 +50,6 @@ in (pkgs.emacsWithPackagesFromUsePackage {
     epkgs.doom-themes
     epkgs.org-roam
     epkgs.org-roam-ui
-    epkgs.eglot
     epkgs.rust-mode
     epkgs.nix-mode
   ];
