@@ -47,6 +47,7 @@ in (pkgs.emacsWithPackagesFromUsePackage {
 
   # Optionally provide extra packages not in the configuration file.
   extraEmacsPackages = epkgs: [
+    epkgs.magit
     epkgs.doom-themes
     epkgs.org-roam
     epkgs.org-roam-ui
