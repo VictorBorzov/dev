@@ -53,5 +53,6 @@ in (pkgs.emacsWithPackagesFromUsePackage {
     epkgs.org-roam-ui
     epkgs.rust-mode
     epkgs.nix-mode
+    epkgs.groovy-mode
   ];
 })

@@ -125,7 +125,7 @@
 #+begin_src emacs-lisp :tangle yes
   (defun my-org-timer-remaining-time ()
     "Return the remaining time of the current org-timer as a formatted string."
-    (if (and org-timer-countdown-timer 
+    (if (and org-timer-countdown-timer
              (timerp org-timer-countdown-timer))
         (let ((time-left (- (time-to-seconds (timer--time org-timer-countdown-timer))
                             (time-to-seconds (current-time)))))
@@ -151,7 +151,7 @@
 Show whitespaces in program mode
 #+begin_src emacs-lisp :tangle yes
   (require 'whitespace)
-  (setq whitespace-style '(face spaces empty tabs newline trailing space-mark tab-mark))
+  (setq whitespace-style '(face spaces empty tabs newline trailing space-mark tab-mark indentation::space))
   (add-hook 'prog-mode-hook 'whitespace-mode)
 #+end_src
 
@@ -228,7 +228,7 @@ Requires =eglot= and =rust-mode= packages.
 
   (require 'rust-mode)
   (setq rust-mode-treesitter-derive t)
-  (setq rust-format-on-save t)  
+  (setq rust-format-on-save t)
 #+end_src
 
 ** Nix
