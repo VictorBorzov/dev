@@ -19,6 +19,7 @@
       zellijWrapper = import ./zellij {inherit pkgs;};
       lfWrapper = import ./lf {inherit pkgs;};
       emacsWrapper = import ./emacs {inherit nixpkgs system emacs-overlay;};
+      vmrss = pkgs.callPackage ./pkgs/vmrss { };
       basics = [
         emacsWrapper
         pkgs.ispell
@@ -49,6 +50,10 @@
         emacs = {
           type = "app";
           program = "${emacsWrapper}/bin/emacs";
+        };
+        vmrss = {
+          type = "app";
+          program = "${vmrss}/bin/vmrss";
         };
       };
 
