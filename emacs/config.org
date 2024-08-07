@@ -199,6 +199,13 @@ Show whitespaces in program mode
 
 * Languages
 
+** Compilation mode
+
+Skip warnings in compilation mode.
+#+begin_src emacs-lisp :tangle yes
+  (setq compilation-skip-threshold 2)
+#+end_src
+
 ** Flycheck
 
 #+begin_src emacs-lisp :tangle no

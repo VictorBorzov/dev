@@ -25,7 +25,7 @@
         pkgs.ispell
       ];
       basicHook = ''
-        emacs -nw .
+        emacs
       '';
     in {
       packages = {
