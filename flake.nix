@@ -33,6 +33,7 @@
         zellij = zellijWrapper;
         lf = lfWrapper;
         emacs = emacsWrapper;
+        vmrss = vmrss;
       };
       apps = {
         helix = {
