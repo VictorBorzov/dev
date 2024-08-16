@@ -54,5 +54,7 @@ in (pkgs.emacsWithPackagesFromUsePackage {
     epkgs.rust-mode
     epkgs.nix-mode
     epkgs.groovy-mode
+    epkgs.fsharp-mode
+    epkgs.markdown-mode
   ];
 })
