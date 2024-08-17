@@ -20,6 +20,7 @@
       lfWrapper = import ./lf {inherit pkgs;};
       emacsWrapper = import ./emacs {inherit nixpkgs system emacs-overlay;};
       vmrss = pkgs.callPackage ./pkgs/vmrss { };
+      groovy-lint = pkgs.callPackage ./pkgs/groovy-lint { };
       basics = [
         emacsWrapper
         pkgs.ispell
@@ -34,6 +35,7 @@
         lf = lfWrapper;
         emacs = emacsWrapper;
         vmrss = vmrss;
+        groovy-lint = groovy-lint;
       };
       apps = {
         helix = {
@@ -55,6 +57,10 @@
         vmrss = {
           type = "app";
           program = "${vmrss}/bin/vmrss";
+        };
+        groovy-lint = {
+          type = "app";
+          program = "${groovy-lint}/bin/groovy-lint";
         };
       };
 
