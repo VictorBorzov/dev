@@ -23,7 +23,6 @@
       groovy-lint = pkgs.callPackage ./pkgs/groovy-lint { };
       basics = [
         emacsWrapper
-        pkgs.ispell
       ];
       basicHook = ''
         emacs
@@ -137,6 +136,8 @@
             basics
             ++ [
               pkgs.clang-tools
+              pkgs.valgrind
+              pkgs.gdb
             ];
           shellHook = basicHook;
         };
