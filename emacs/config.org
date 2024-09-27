@@ -17,6 +17,7 @@
   (setq use-short-answers t)
 
   (setq ring-bell-function 'ignore)
+
   (setq-default indent-tabs-mode nil)
 
   (global-visual-line-mode 1)
@@ -151,8 +152,28 @@
 Show whitespaces in program mode
 #+begin_src emacs-lisp :tangle yes
   (require 'whitespace)
-  (setq whitespace-style '(face spaces empty tabs newline trailing space-mark tab-mark indentation::space))
-  (add-hook 'prog-mode-hook 'whitespace-mode)
+  (setq whitespace-style '(face empty newline trailing space-mark indentation::space))
+  ;(add-hook 'prog-mode-hook 'whitespace-mode)
+#+end_src
+
+* Ledger
+
+Specify useful commands for ledger
+#+begin_src emacs-lisp :tangle yes
+  (setq ledger-reports
+      '(("cashflow" "ledger -f %(ledger-file) --cost -X EUR bal ^Income ^Expenses")
+        ("cashflow-rsd" "ledger -f %(ledger-file) --cost -X RSD bal ^Income ^Expenses")
+        ("net-worth" "ledger -f %(ledger-file) --cost -X EUR bal ^Assets ^Liabilities")
+        ("net-worth-rsd" "ledger -f %(ledger-file) --cost -X RSD bal ^Assets ^Liabilities")
+        ("prices" "ledger prices -f %(ledger-file)")
+        ("bal" "%(binary) -f %(ledger-file) --cost -X EUR bal")
+        ("bal-rsd" "%(binary) -f %(ledger-file) --cost -X RSD bal")
+        ("reg" "%(binary) -f %(ledger-file) --cost -X EUR reg")
+        ("reg-rsd" "%(binary) -f %(ledger-file) --cost -X RSD reg")
+        ("payee" "%(binary) -f %(ledger-file) --cost -X EUR reg @%(payee)")
+        ("payee-rsd" "%(binary) -f %(ledger-file) --cost -X RSD reg @%(payee)")
+        ("account" "%(binary) -f %(ledger-file) --cost -X EUR reg %(account)")
+        ("account-rsd" "%(binary) -f %(ledger-file) --cost -X RSD reg %(account)")))
 #+end_src
 
 * Org-Roam
@@ -243,3 +264,58 @@ Requires =eglot= and =rust-mode= packages.
 #+begin_src emacs-lisp :tangle yes
   (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
 #+end_src
+
+** C
+
+Linux kernel coding style
+#+begin_src emacs-lisp :tangle yes
+  (defun c-lineup-arglist-tabs-only (ignored)
+  "Line up argument lists by tabs, not spaces"
+  (let* ((anchor (c-langelem-pos c-syntactic-element))
+         (column (c-langelem-2nd-pos c-syntactic-element))
+         (offset (- (1+ column) anchor))
+         (steps (floor offset c-basic-offset)))
+    (* (max steps 1)
+       c-basic-offset)))
+
+(dir-locals-set-class-variables
+ 'linux-kernel
+ '((c-mode . (
+        (c-basic-offset . 8)
+        (c-label-minimum-indentation . 0)
+        (c-offsets-alist . (
+                (arglist-close         . c-lineup-arglist-tabs-only)
+                (arglist-cont-nonempty .
+                    (c-lineup-gcc-asm-reg c-lineup-arglist-tabs-only))
+                (arglist-intro         . +)
+                (brace-list-intro      . +)
+                (c                     . c-lineup-C-comments)
+                (case-label            . 0)
+                (comment-intro         . c-lineup-comment)
+                (cpp-define-intro      . +)
+                (cpp-macro             . -1000)
+                (cpp-macro-cont        . +)
+                (defun-block-intro     . +)
+                (else-clause           . 0)
+                (func-decl-cont        . +)
+                (inclass               . +)
+                (inher-cont            . c-lineup-multi-inher)
+                (knr-argdecl-intro     . 0)
+                (label                 . -1000)
+                (statement             . 0)
+                (statement-block-intro . +)
+                (statement-case-intro  . +)
+                (statement-cont        . +)
+                (substatement          . +)
+                ))
+        (indent-tabs-mode . t)
+        (show-trailing-whitespace . t)
+        ))))
+
+(dir-locals-set-directory-class
+ (expand-file-name "~/src/")
+ 'linux-kernel)
+#+end_src
+
+#+RESULTS:
+| /home/vb/src/ | linux-kernel | nil |

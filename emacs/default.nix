@@ -53,8 +53,8 @@ in (pkgs.emacsWithPackagesFromUsePackage {
     epkgs.org-roam-ui
     epkgs.rust-mode
     epkgs.nix-mode
-    epkgs.groovy-mode
-    epkgs.fsharp-mode
-    epkgs.markdown-mode
+    epkgs.magit-delta
+    epkgs.ledger-mode
+    epkgs.gruber-darker-theme
   ];
 })
