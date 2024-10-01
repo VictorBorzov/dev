@@ -56,5 +56,7 @@ in (pkgs.emacsWithPackagesFromUsePackage {
     epkgs.magit-delta
     epkgs.ledger-mode
     epkgs.gruber-darker-theme
+    epkgs.smex
+    epkgs.multiple-cursors
   ];
 })

@@ -4,10 +4,13 @@
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (show-paren-mode 1)
+  (scroll-bar-mode -1)
   (delete-selection-mode 1)
   (global-hl-line-mode +1)
 
-  (global-display-line-numbers-mode t)
+  '(warning-minimum-level :error)
+
+  (global-display-line-numbers-mode +1)
   (defun my-relative-line-numbers-hook ()
     (setq display-line-numbers 'relative))
   (add-hook 'display-line-numbers-mode-hook 'my-relative-line-numbers-hook)
@@ -27,6 +30,35 @@
   (ido-mode 1)
 
   (setq dired-listing-switches "-alFh")
+
+
+  (defun rc/duplicate-dwim()
+    (interactive)
+    (duplicate-dwim ())
+    (next-line))
+
+  (global-set-key (kbd "C-,") 'rc/duplicate-dwim)
+
+#+end_src
+
+* Smex
+
+Configure smex and backup old call just in case
+#+begin_src emacs-lisp :tangle yes
+  (global-set-key (kbd "M-x") 'smex)
+  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+#+end_src
+
+* Multiple cursor
+
+Configure mc
+#+begin_src emacs-lisp :tangle yes
+  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+  (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+  (global-set-key (kbd "C-\"") 'mc/skip-to-next-like-this)
+  (global-set-key (kbd "C-:") 'mc/skip-to-previous-like-this)
 #+end_src
 
 * Tex
@@ -139,14 +171,14 @@
   (add-to-list 'after-make-frame-functions
                (lambda (frame)
                  (select-frame frame)
-                 (set-face-attribute 'default nil :font "Iosevka Nerd Font-18")))
+                 (set-face-attribute 'default nil :font "Iosevka Nerd Font-20")))
 #+end_src
 
 * Themes
 
 #+begin_src emacs-lisp :tangle yes
-  (load-theme 'doom-gruvbox t)
-  (set-face-attribute 'default nil :font "Iosevka Nerd Font-18")
+  (load-theme 'gruber-darker t)
+  (set-face-attribute 'default nil :font "Iosevka Nerd Font-20")
 #+end_src
 
 Show whitespaces in program mode
@@ -267,7 +299,8 @@ Requires =eglot= and =rust-mode= packages.
 
 ** C
 
-Linux kernel coding style
+** Linux kernel coding style
+
 #+begin_src emacs-lisp :tangle yes
   (defun c-lineup-arglist-tabs-only (ignored)
   "Line up argument lists by tabs, not spaces"
@@ -317,5 +350,3 @@ Linux kernel coding style
  'linux-kernel)
 #+end_src
 
-#+RESULTS:
-| /home/vb/src/ | linux-kernel | nil |
