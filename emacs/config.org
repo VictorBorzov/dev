@@ -429,7 +429,7 @@ Requires =eglot= and =rust-mode= packages.
 
 (dir-locals-set-class-variables
  'linux-kernel
- '((simpc-mode . (
+ '((c-mode . (
         (c-basic-offset . 8)
         (c-label-minimum-indentation . 0)
         (c-offsets-alist . (
@@ -465,4 +465,8 @@ Requires =eglot= and =rust-mode= packages.
  (expand-file-name "~/src/")
  'linux-kernel)
 #+end_src
+
+#+RESULTS:
+| /home/vb/src/ | linux-kernel | nil |
+| /home/vb/src/ | linux-kernel | nil |
 
