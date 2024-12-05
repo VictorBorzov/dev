@@ -25,7 +25,7 @@ in (pkgs.emacsWithPackagesFromUsePackage {
   defaultInitFile = true;
 
   # Package is optional, defaults to pkgs.emacs
-  package = pkgs.emacs29-pgtk;
+  package = pkgs.emacs-gtk;
 
   # By default emacsWithPackagesFromUsePackage will only pull in
   # packages with `:ensure`, `:ensure t` or `:ensure <package name>`.
