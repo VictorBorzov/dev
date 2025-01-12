@@ -171,14 +171,14 @@ Configure mc
   (add-to-list 'after-make-frame-functions
                (lambda (frame)
                  (select-frame frame)
-                 (set-face-attribute 'default nil :font "Iosevka-40")))
+                 (set-face-attribute 'default nil :font "Iosevka-20")))
 #+end_src
 
 * Themes
 
 #+begin_src emacs-lisp :tangle yes
   (load-theme 'gruber-darker t)
-  (set-face-attribute 'default nil :font "Iosevka-40")
+  (set-face-attribute 'default nil :font "Iosevka-20")
 #+end_src
 
 Show whitespaces in program mode
@@ -255,7 +255,7 @@ Specify useful commands for ledger
 ** Compilation mode
 
 Skip warnings in compilation mode.
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp :tangle no
   (setq compilation-skip-threshold 2)
 #+end_src
 
