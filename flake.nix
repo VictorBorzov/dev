@@ -5,12 +5,14 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
+    nvf.url = "github:notashelf/nvf";
   };
 
   outputs = {
     nixpkgs,
     flake-utils,
     emacs-overlay,
+    nvf,
     ...
   }:
     flake-utils.lib.eachDefaultSystem (system: let
@@ -35,6 +37,7 @@
         emacs = emacsWrapper;
         vmrss = vmrss;
         groovy-lint = groovy-lint;
+        vim = (nvf.lib.neovimConfiguration { pkgs = pkgs; modules = [ ./nvf  ]; }).neovim;
       };
       apps = {
         helix = {
