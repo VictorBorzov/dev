@@ -7,13 +7,15 @@
   (scroll-bar-mode -1)
   (delete-selection-mode 1)
   (global-hl-line-mode +1)
+  (blink-cursor-mode -1)
 
   '(warning-minimum-level :error)
 
   (global-display-line-numbers-mode +1)
-  (defun my-relative-line-numbers-hook ()
-    (setq display-line-numbers 'relative))
-  (add-hook 'display-line-numbers-mode-hook 'my-relative-line-numbers-hook)
+
+  ;; (defun my-relative-line-numbers-hook ()
+  ;;   (setq display-line-numbers 'relative))
+  ;; (add-hook 'display-line-numbers-mode-hook 'my-relative-line-numbers-hook)
 
   (setq backup-directory-alist '(("." . "~/.emacs_saves")))
 
