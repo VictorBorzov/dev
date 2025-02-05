@@ -54,7 +54,7 @@ in (pkgs.emacsWithPackagesFromUsePackage {
     epkgs.rust-mode
     epkgs.markdown-mode
     epkgs.nix-mode
-    epkgs.magit-delta
+    # epkgs.magit-delta
     epkgs.ledger-mode
     epkgs.gruber-darker-theme
     epkgs.smex
