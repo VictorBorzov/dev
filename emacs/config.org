@@ -76,7 +76,7 @@ Configure smex and backup old call just in case
 
 Configure mc
 #+begin_src emacs-lisp :tangle yes
-  (globa-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
   (global-set-key (kbd "C->") 'mc/mark-next-like-this)
   (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
   (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
@@ -194,7 +194,7 @@ Configure mc
   (add-to-list 'after-make-frame-functions
                (lambda (frame)
                  (select-frame frame)
-                 (set-face-attribute 'default nil :font "Iosevka-20")))
+                 (set-face-attribute 'default nil :font "Iosevka-40")))
 #+end_src
 
 * Themes
