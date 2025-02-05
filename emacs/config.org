@@ -8,6 +8,10 @@
   (delete-selection-mode 1)
   (global-hl-line-mode +1)
   (blink-cursor-mode -1)
+  (column-number-mode 1)
+
+  (global-set-key (kbd "M-p") #'scroll-down-line)
+  (global-set-key (kbd "M-n") #'scroll-up-line)
 
   '(warning-minimum-level :error)
 
@@ -43,6 +47,23 @@
 
 #+end_src
 
+Keybindings
+#+begin_src emacs-lisp :tangle yes
+      ;; Opens a new line and places cursor on it, without breaking the current line
+      (define-key global-map (kbd "<M-return>") (lambda ()
+                                                  (interactive)
+                                                  (move-end-of-line 1)
+                                                  (newline-and-indent)))
+
+      ;; Opens a new line above and places cursor on it
+      (define-key global-map (kbd "<M-S-return>") (lambda ()
+                                                  (interactive)
+                                                  (move-beginning-of-line 1)
+                                                  (newline)
+                                                  (previous-line)
+                                                  (indent-according-to-mode)))
+#+end_src
+
 * Smex
 
 Configure smex and backup old call just in case
@@ -55,7 +76,7 @@ Configure smex and backup old call just in case
 
 Configure mc
 #+begin_src emacs-lisp :tangle yes
-  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+  (globa-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
   (global-set-key (kbd "C->") 'mc/mark-next-like-this)
   (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
   (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
