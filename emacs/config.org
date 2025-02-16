@@ -102,6 +102,7 @@ Configure mc
 
 #+begin_src emacs-lisp :tangle yes
   (setq org-hide-emphasis-markers t)
+  (setq org-log-done 'time)
   ;; (advice-remove 'org-babel-do-load-languages #'ignore)
   ;;  (add-to-list 'org-src-lang-modes '("jupyter" . python))
 
@@ -136,7 +137,7 @@ Configure mc
   (put 'dired-find-alternate-file 'disabled nil)
   (require 'org-tempo)
 
-  (setq org-directory "~/sync/orgmode/gtd")
+  (setq org-directory "~/sync/org")
   (setq org-agenda-files (directory-files org-directory t "\\.org$"))
   (setq org-agenda-skip-unavailable-files t)
   (setq org-refile-targets
@@ -194,7 +195,7 @@ Configure mc
   (add-to-list 'after-make-frame-functions
                (lambda (frame)
                  (select-frame frame)
-                 (set-face-attribute 'default nil :font "Iosevka-40")))
+                 (set-face-attribute 'default nil :font "Iosevka-20")))
 #+end_src
 
 * Themes
