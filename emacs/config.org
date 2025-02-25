@@ -6,9 +6,10 @@
   (show-paren-mode 1)
   (scroll-bar-mode -1)
   (delete-selection-mode 1)
-  (global-hl-line-mode +1)
+  (global-hl-line-mode -1)
   (blink-cursor-mode -1)
   (column-number-mode 1)
+  (fringe-mode minimal 4)
 
   (global-set-key (kbd "M-p") #'scroll-down-line)
   (global-set-key (kbd "M-n") #'scroll-up-line)
@@ -20,6 +21,8 @@
   ;; (defun my-relative-line-numbers-hook ()
   ;;   (setq display-line-numbers 'relative))
   ;; (add-hook 'display-line-numbers-mode-hook 'my-relative-line-numbers-hook)
+
+  (setq mode-line-format nil)
 
   (setq backup-directory-alist '(("." . "~/.emacs_saves")))
 
@@ -195,14 +198,14 @@ Configure mc
   (add-to-list 'after-make-frame-functions
                (lambda (frame)
                  (select-frame frame)
-                 (set-face-attribute 'default nil :font "Iosevka-20")))
+                 (set-face-attribute 'default nil :font "Iosevka-18")))
 #+end_src
 
 * Themes
 
 #+begin_src emacs-lisp :tangle yes
   (load-theme 'gruber-darker t)
-  (set-face-attribute 'default nil :font "Iosevka-20")
+  (set-face-attribute 'default nil :font "Iosevka-18")
 #+end_src
 
 Show whitespaces in program mode
