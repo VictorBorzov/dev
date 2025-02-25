@@ -9,8 +9,6 @@
   (global-hl-line-mode -1)
   (blink-cursor-mode -1)
   (column-number-mode 1)
-  (fringe-mode minimal 4)
-
   (global-set-key (kbd "M-p") #'scroll-down-line)
   (global-set-key (kbd "M-n") #'scroll-up-line)
 
@@ -22,6 +20,7 @@
   ;;   (setq display-line-numbers 'relative))
   ;; (add-hook 'display-line-numbers-mode-hook 'my-relative-line-numbers-hook)
 
+  (setq set-fringe-mode 0)
   (setq mode-line-format nil)
 
   (setq backup-directory-alist '(("." . "~/.emacs_saves")))
