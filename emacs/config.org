@@ -30,6 +30,7 @@
   (setq ring-bell-function 'ignore)
 
   (setq-default indent-tabs-mode nil)
+  (setq-default tab-width 8)
 
   (global-visual-line-mode 1)
 
@@ -444,6 +445,11 @@ Requires =eglot= and =rust-mode= packages.
 *** Linux kernel coding style
 
 #+begin_src emacs-lisp :tangle yes
+  (setq c-default-style "linux")
+  (setq tab-width 8)
+#+end_src
+
+#+begin_src emacs-lisp :tangle no
   (defun c-lineup-arglist-tabs-only (ignored)
   "Line up argument lists by tabs, not spaces"
   (let* ((anchor (c-langelem-pos c-syntactic-element))
