@@ -154,8 +154,10 @@ Configure mc
     ("c" "Todo [main]" entry (file+headline "~/sync/orgmode/gtd/main.org" "Inbox") "\n* TODO %i%?\n")
    ))
 
+  (global-set-key (kbd "C-c l") #'org-store-link)
   (global-set-key (kbd "C-c a") #'org-agenda)
   (global-set-key (kbd "C-c c") #'org-capture)
+
   (setq org-todo-keywords
         '((sequence "TODO(t)" "IN-PROGRESS(i)" "SUSPENDED(s)" "IN-REVIEW(r)" "|" "WAITING(w)" "DONE(d)" "CANCELED(c)")))
   (setq org-enforce-todo-dependencies t)
