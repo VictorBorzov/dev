@@ -41,10 +41,10 @@
   (setq dired-listing-switches "-alFh")
 
 
-  (defun rc/duplicate-dwim()
-    (interactive)
-    (duplicate-dwim ())
-    (next-line))
+  ;; (defun rc/duplicate-dwim()
+    ;; (interactive)
+    ;; (duplicate-dwim ())
+    ;; (next-line))
 
   ;; (global-set-key (kbd "C-,") 'rc/duplicate-dwim)
 
@@ -53,7 +53,7 @@
 Keybindings
 #+begin_src emacs-lisp :tangle yes
   ;; Opens a new line and places cursor on it, without breaking the current line
-  (d;; efine-key global-map (kbd "<M-return>") (lambda ()
+  ;; (define-key global-map (kbd "<M-return>") (lambda ()
   ;;                                             (interactive)
   ;;                                             (move-end-of-line 1)
   ;;                                             (newline-and-indent)))
