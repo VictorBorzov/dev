@@ -9,8 +9,8 @@
   (global-hl-line-mode -1)
   (blink-cursor-mode -1)
   (column-number-mode 1)
-  (global-set-key (kbd "M-p") #'scroll-down-line)
-  (global-set-key (kbd "M-n") #'scroll-up-line)
+  ;; (global-set-key (kbd "M-p") #'scroll-down-line)
+  ;; (global-set-key (kbd "M-n") #'scroll-up-line)
 
   '(warning-minimum-level :error)
 
@@ -46,25 +46,25 @@
     (duplicate-dwim ())
     (next-line))
 
-  (global-set-key (kbd "C-,") 'rc/duplicate-dwim)
+  ;; (global-set-key (kbd "C-,") 'rc/duplicate-dwim)
 
 #+end_src
 
 Keybindings
 #+begin_src emacs-lisp :tangle yes
-      ;; Opens a new line and places cursor on it, without breaking the current line
-      (define-key global-map (kbd "<M-return>") (lambda ()
-                                                  (interactive)
-                                                  (move-end-of-line 1)
-                                                  (newline-and-indent)))
+  ;; Opens a new line and places cursor on it, without breaking the current line
+  (d;; efine-key global-map (kbd "<M-return>") (lambda ()
+  ;;                                             (interactive)
+  ;;                                             (move-end-of-line 1)
+  ;;                                             (newline-and-indent)))
 
-      ;; Opens a new line above and places cursor on it
-      (define-key global-map (kbd "<M-S-return>") (lambda ()
-                                                  (interactive)
-                                                  (move-beginning-of-line 1)
-                                                  (newline)
-                                                  (previous-line)
-                                                  (indent-according-to-mode)))
+  ;; ;; Opens a new line above and places cursor on it
+  ;; (define-key global-map (kbd "<M-S-return>") (lambda ()
+  ;;                                             (interactive)
+  ;;                                             (move-beginning-of-line 1)
+  ;;                                             (newline)
+  ;;                                             (previous-line)
+  ;;                                             (indent-according-to-mode)))
 #+end_src
 
 * Smex
@@ -79,12 +79,12 @@ Configure smex and backup old call just in case
 
 Configure mc
 #+begin_src emacs-lisp :tangle yes
-  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-  (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-  (global-set-key (kbd "C-\"") 'mc/skip-to-next-like-this)
-  (global-set-key (kbd "C-:") 'mc/skip-to-previous-like-this)
+  ;; (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+  ;; (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  ;; (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+  ;; (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+  ;; (global-set-key (kbd "C-\"") 'mc/skip-to-next-like-this)
+  ;; (global-set-key (kbd "C-:") 'mc/skip-to-previous-like-this)
 #+end_src
 
 * Tex
@@ -104,82 +104,85 @@ Configure mc
 * Orgmode
 
 #+begin_src emacs-lisp :tangle yes
-  (setq org-hide-emphasis-markers t)
-  (setq org-log-done 'time)
-  ;; (advice-remove 'org-babel-do-load-languages #'ignore)
-  ;;  (add-to-list 'org-src-lang-modes '("jupyter" . python))
+    (setq org-hide-emphasis-markers t)
+    (setq org-log-done 'time)
+    ;; (advice-remove 'org-babel-do-load-languages #'ignore)
+    ;;  (add-to-list 'org-src-lang-modes '("jupyter" . python))
 
-  ;; (org-babel-do-load-languages
-  ;;  'org-babel-load-languages
-  ;;  '((haskell . t)
-  ;;    (sql . t)
-  ;;    (shell . t)
-  ;;    (python . t)
-  ;;    (jupyter . t)
+    ;; (org-babel-do-load-languages
+    ;;  'org-babel-load-languages
+    ;;  '((haskell . t)
+    ;;    (sql . t)
+    ;;    (shell . t)
+    ;;    (python . t)
+    ;;    (jupyter . t)
 
-  ;;   ;; ... other languages you might have
-  ;;    ))
-  ;;    (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
+    ;;   ;; ... other languages you might have
+    ;;    ))
+    ;;    (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
 
-  ;; (defun org-babel-execute:fsharp (body params)
-  ;; (let* ((command (concat "echo '" body "' | dotnet fsi --nologo | grep 'val it:.* =' | sed 's/^.*= //'"))
-  ;;        (result (string-trim (shell-command-to-string command))))
-  ;;   result))
+    ;; (defun org-babel-execute:fsharp (body params)
+    ;; (let* ((command (concat "echo '" body "' | dotnet fsi --nologo | grep 'val it:.* =' | sed 's/^.*= //'"))
+    ;;        (result (string-trim (shell-command-to-string command))))
+    ;;   result))
 
-  ;; (defun org-babel-execute:fsharp (body params)
-  ;;   (let* ((command (concat "echo '" body "' | dotnet fsi"))
-  ;;          (result (string-trim (shell-command-to-string command))))
-  ;;     result))
+    ;; (defun org-babel-execute:fsharp (body params)
+    ;;   (let* ((command (concat "echo '" body "' | dotnet fsi"))
+    ;;          (result (string-trim (shell-command-to-string command))))
+    ;;     result))
 
-  ;; (use-package ob-fsharp
-  ;;   :straight t
-  ;;   :config
-  ;;   (add-to-list 'org-babel-load-languages '(fsharp . t)))
+    ;; (use-package ob-fsharp
+    ;;   :straight t
+    ;;   :config
+    ;;   (add-to-list 'org-babel-load-languages '(fsharp . t)))
 
-  (setq doc-view-resolution 400)
-  (put 'dired-find-alternate-file 'disabled nil)
-  (require 'org-tempo)
+    (setq doc-view-resolution 400)
+    (put 'dired-find-alternate-file 'disabled nil)
+    (require 'org-tempo)
 
-  (setq org-directory "~/sync/org")
-  (setq org-agenda-files (directory-files org-directory t "\\.org$"))
-  (setq org-agenda-skip-unavailable-files t)
-  (setq org-refile-targets
-        '((nil :maxlevel . 3)
-      (org-agenda-files :maxlevel . 3)))
+    (setq org-directory "~/sync/org")
+    (setq org-agenda-files (directory-files org-directory t "\\.org$"))
+    (setq org-agenda-skip-unavailable-files t)
+    (setq org-refile-targets
+          '((nil :maxlevel . 3)
+        (org-agenda-files :maxlevel . 3)))
 
-;;  (setq org-refile-targets '((nil :maxlevel . 2)))
+  ;;  (setq org-refile-targets '((nil :maxlevel . 2)))
 
-  (setq org-capture-templates '(
-    ("t" "Todo [inbox]" entry (file+headline "~/sync/orgmode/gtd/inbox.org" "Inbox") "\n* TODO %i%?\n")
-    ("c" "Todo [main]" entry (file+headline "~/sync/orgmode/gtd/main.org" "Inbox") "\n* TODO %i%?\n")
-   ))
+    (setq org-capture-templates '(
+      ("t" "Todo [inbox]" entry (file+headline "~/sync/orgmode/gtd/inbox.org" "Inbox") "\n* TODO %i%?\n")
+      ("c" "Todo [main]" entry (file+headline "~/sync/orgmode/gtd/main.org" "Inbox") "\n* TODO %i%?\n")
+      ("r" "Reschedule task with reason"
+         entry (file+headline "~/sync/org/main.org" "Task Reschedules")
+         "* TODO %^{Task description}\nSCHEDULED: %^t\n:LOGBOOK:\n- Rescheduled from %^{Original date} due to %^{Reason}\n:END:\n")
+     ))
 
-  (global-set-key (kbd "C-c l") #'org-store-link)
-  (global-set-key (kbd "C-c a") #'org-agenda)
-  (global-set-key (kbd "C-c c") #'org-capture)
+    (global-set-key (kbd "C-c l") #'org-store-link)
+    (global-set-key (kbd "C-c a") #'org-agenda)
+    (global-set-key (kbd "C-c c") #'org-capture)
 
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "IN-PROGRESS(i)" "SUSPENDED(s)" "IN-REVIEW(r)" "|" "WAITING(w)" "DONE(d)" "CANCELED(c)")))
-  (setq org-enforce-todo-dependencies t)
+    (setq org-todo-keywords
+          '((sequence "TODO(t)" "IN-PROGRESS(i)" "SUSPENDED(s)" "IN-REVIEW(r)" "|" "WAITING(w)" "DONE(d)" "CANCELED(c)")))
+    (setq org-enforce-todo-dependencies t)
 
-  (setq org-agenda-prefix-format '((agenda . " %i %-12:c%?-12t%-6e% s")
-                                   (todo . " %i %-12:c %-6e")
-                                   (tags . " %i %-12:c")
-                                   (search . " %i %-12:c")))
-  (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
+    (setq org-agenda-prefix-format '((agenda . " %i %-12:c%?-12t%-6e% s")
+                                     (todo . " %i %-12:c %-6e")
+                                     (tags . " %i %-12:c")
+                                     (search . " %i %-12:c")))
+    (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
 
-  (setq org-clock-persist 'history)
-  (org-clock-persistence-insinuate)
+    (setq org-clock-persist 'history)
+    (org-clock-persistence-insinuate)
 
-  (setq org-timer-default-timer 25)
+    (setq org-timer-default-timer 25)
 
-  (defun my-org-mode-hook ()
-    (org-indent-mode t))
-  (add-hook 'org-mode-hook 'my-org-mode-hook)
+    (defun my-org-mode-hook ()
+      (org-indent-mode t))
+    (add-hook 'org-mode-hook 'my-org-mode-hook)
 
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 4))
+    (setq org-format-latex-options (plist-put org-format-latex-options :scale 4))
 
-  (setq org-confirm-babel-evaluate nil)
+    (setq org-confirm-babel-evaluate nil)
 #+end_src
 
 ** Task status for Status bars
@@ -206,15 +209,48 @@ Configure mc
 * Themes
 
 #+begin_src emacs-lisp :tangle yes
-  (load-theme 'gruber-darker t)
-  (set-face-attribute 'default nil :font "Iosevka-18")
+  (load-theme 'doom-gruvbox t)
+  (set-face-attribute 'default nil :font "Iosevka-12")
 #+end_src
+
+Modus operandi customization
+#+begin_src emacs-lisp :tangle yes
+(load-theme 'modus-operandi t)
+
+;; Override colors after the theme is loaded
+(with-eval-after-load 'modus-themes
+  (modus-themes-with-colors
+    (custom-set-faces
+     ;; Basic text and background
+     `(default ((t (:background "#1c1c1c" :foreground "#e4e4ef")))) ; Dark gray background, light gray text
+     `(cursor ((t (:background "#f6f3e8"))))                          ; Light cursor
+
+     ;; Syntax elements
+     `(font-lock-comment-face ((t (:foreground "#888888" :slant italic))))
+     `(font-lock-string-face ((t (:foreground "#86a2be"))))
+     `(font-lock-keyword-face ((t (:foreground "#ffdd33" :weight bold))))
+     `(font-lock-function-name-face ((t (:foreground "#96a6c8"))))
+     `(font-lock-variable-name-face ((t (:foreground "#ffb964"))))
+     `(font-lock-type-face ((t (:foreground "#99cc99"))))
+     `(font-lock-constant-face ((t (:foreground "#dca3a3"))))
+     `(font-lock-builtin-face ((t (:foreground "#dca3a3"))))
+     `(font-lock-warning-face ((t (:foreground "#cc9393" :weight bold))))
+
+     ;; UI elements
+     `(region ((t (:background "#333333"))))
+     `(mode-line ((t (:background "#444444" :foreground "#dddddd"))))
+     `(mode-line-inactive ((t (:background "#2a2a2a" :foreground "#888888"))))
+     `(fringe ((t (:background "#1c1c1c"))))
+     `(minibuffer-prompt ((t (:foreground "#96a6c8" :weight bold))))
+     )))
+#+end_src
+
 
 Show whitespaces in program mode
 #+begin_src emacs-lisp :tangle yes
   (require 'whitespace)
   (setq whitespace-style '(face empty newline trailing space-mark indentation::space))
-  ;(add-hook 'prog-mode-hook 'whitespace-mode)
+  (add-hook 'prog-mode-hook 'whitespace-mode)
 #+end_src
 
 * Ledger
@@ -319,6 +355,59 @@ Requires =eglot= and =rust-mode= packages.
   (setq rust-mode-treesitter-derive t)
   (setq rust-format-on-save t)
 #+end_src
+
+** C++
+
+* C++ IDE
+
+** Eglot
+#+begin_src emacs-lisp :tangle yes
+  (add-hook 'c++-mode-hook #'eglot-ensure)
+  (add-hook 'c-mode-hook #'eglot-ensure)
+
+  (setq eglot-autoshutdown t)
+  (setq eglot-extend-to-xref t)
+
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 '((c++-mode c-mode) . ("clangd" "--background-index" "--pch-storage=memory"))))
+#+end_src
+
+#+begin_src emacs-lisp :tangle yes
+  (global-corfu-mode)
+  (setq corfu-cycle t
+        corfu-auto t
+        corfu-auto-delay 0.0
+        corfu-quit-no-match 'separator
+        corfu-preselect-first t)
+#+end_src
+
+#+begin_src emacs-lisp :tangle yes
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+#+end_src
+
+#+begin_src emacs-lisp :tangle yes
+  (add-hook 'prog-mode-hook #'flymake-mode)
+#+end_src
+
+#+begin_src emacs-lisp :tangle yes
+  (setq project-vc-merge-submodules nil)
+#+end_src
+
+#+begin_src emacs-lisp :tangle yes
+  (vertico-mode)
+  (global-set-key (kbd "C-s") #'consult-line)
+  (global-set-key (kbd "C-c p s") #'consult-ripgrep)
+#+end_src
+
+#+begin_src emacs-lisp :tangle yes
+  (add-hook 'c++-mode-hook
+            (lambda ()
+              (setq c-basic-offset 4)
+              (c-set-style "linux")))
+#+end_src
+
 
 ** Nix
 
@@ -447,60 +536,29 @@ Requires =eglot= and =rust-mode= packages.
 *** Linux kernel coding style
 
 #+begin_src emacs-lisp :tangle yes
-  (setq c-default-style "linux")
+  (setq c-default-style "stroustrup")
   (setq tab-width 8)
 #+end_src
 
-#+begin_src emacs-lisp :tangle no
-  (defun c-lineup-arglist-tabs-only (ignored)
-  "Line up argument lists by tabs, not spaces"
-  (let* ((anchor (c-langelem-pos c-syntactic-element))
-         (column (c-langelem-2nd-pos c-syntactic-element))
-         (offset (- (1+ column) anchor))
-         (steps (floor offset c-basic-offset)))
-    (* (max steps 1)
-       c-basic-offset)))
+#+begin_src emacs-lisp :tangle yes
+  (defvar my-cpp-other-file-alist
+  '(("\\.cpp\\'" (".hpp" ".ipp"))
+    ("\\.ipp\\'" (".hpp" ".cpp"))
+    ("\\.hpp\\'" (".ipp" ".cpp"))
+    ("\\.cxx\\'" (".hxx" ".ixx"))
+    ("\\.ixx\\'" (".cxx" ".hxx"))
+    ("\\.hxx\\'" (".ixx" ".cxx"))
+    ("\\.c\\'" (".h"))
+    ("\\.h\\'" (".c"))
+    ))
 
-(dir-locals-set-class-variables
- 'linux-kernel
- '((c-mode . (
-        (c-basic-offset . 8)
-        (c-label-minimum-indentation . 0)
-        (c-offsets-alist . (
-                (arglist-close         . c-lineup-arglist-tabs-only)
-                (arglist-cont-nonempty .
-                    (c-lineup-gcc-asm-reg c-lineup-arglist-tabs-only))
-                (arglist-intro         . +)
-                (brace-list-intro      . +)
-                (c                     . c-lineup-C-comments)
-                (case-label            . 0)
-                (comment-intro         . c-lineup-comment)
-                (cpp-define-intro      . +)
-                (cpp-macro             . -1000)
-                (cpp-macro-cont        . +)
-                (defun-block-intro     . +)
-                (else-clause           . 0)
-                (func-decl-cont        . +)
-                (inclass               . +)
-                (inher-cont            . c-lineup-multi-inher)
-                (knr-argdecl-intro     . 0)
-                (label                 . -1000)
-                (statement             . 0)
-                (statement-block-intro . +)
-                (statement-case-intro  . +)
-                (statement-cont        . +)
-                (substatement          . +)
-                ))
-        (indent-tabs-mode . t)
-        (show-trailing-whitespace . t)
-        ))))
+(setq-default ff-other-file-alist 'my-cpp-other-file-alist)
 
-(dir-locals-set-directory-class
- (expand-file-name "~/src/")
- 'linux-kernel)
+(add-hook 'c-initialization-hook (lambda ()
+    (define-key c-mode-base-map [(meta o)] 'ff-get-other-file))
+)
+
 #+end_src
 
 #+RESULTS:
-| /home/vb/src/ | linux-kernel | nil |
-| /home/vb/src/ | linux-kernel | nil |
-
+| #[nil ((define-key c-mode-base-map [(meta o)] 'ff-get-other-file)) nil] |

@@ -59,5 +59,11 @@ in (pkgs.emacsWithPackagesFromUsePackage {
     epkgs.gruber-darker-theme
     epkgs.smex
     epkgs.multiple-cursors
+    epkgs.corfu
+    epkgs.cape
+    epkgs.consult
+    epkgs.vertico
+    epkgs.project
+    epkgs.doct
   ];
 })
