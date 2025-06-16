@@ -106,36 +106,6 @@ Configure mc
 #+begin_src emacs-lisp :tangle yes
     (setq org-hide-emphasis-markers t)
     (setq org-log-done 'time)
-    ;; (advice-remove 'org-babel-do-load-languages #'ignore)
-    ;;  (add-to-list 'org-src-lang-modes '("jupyter" . python))
-
-    ;; (org-babel-do-load-languages
-    ;;  'org-babel-load-languages
-    ;;  '((haskell . t)
-    ;;    (sql . t)
-    ;;    (shell . t)
-    ;;    (python . t)
-    ;;    (jupyter . t)
-
-    ;;   ;; ... other languages you might have
-    ;;    ))
-    ;;    (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
-
-    ;; (defun org-babel-execute:fsharp (body params)
-    ;; (let* ((command (concat "echo '" body "' | dotnet fsi --nologo | grep 'val it:.* =' | sed 's/^.*= //'"))
-    ;;        (result (string-trim (shell-command-to-string command))))
-    ;;   result))
-
-    ;; (defun org-babel-execute:fsharp (body params)
-    ;;   (let* ((command (concat "echo '" body "' | dotnet fsi"))
-    ;;          (result (string-trim (shell-command-to-string command))))
-    ;;     result))
-
-    ;; (use-package ob-fsharp
-    ;;   :straight t
-    ;;   :config
-    ;;   (add-to-list 'org-babel-load-languages '(fsharp . t)))
-
     (setq doc-view-resolution 400)
     (put 'dired-find-alternate-file 'disabled nil)
     (require 'org-tempo)
@@ -214,7 +184,7 @@ Configure mc
 #+end_src
 
 Modus operandi customization
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp :tangle no
 (load-theme 'modus-operandi t)
 
 ;; Override colors after the theme is loaded
@@ -250,7 +220,7 @@ Show whitespaces in program mode
 #+begin_src emacs-lisp :tangle yes
   (require 'whitespace)
   (setq whitespace-style '(face empty newline trailing space-mark indentation::space))
-  (add-hook 'prog-mode-hook 'whitespace-mode)
+  ;; (add-hook 'prog-mode-hook 'whitespace-mode)
 #+end_src
 
 * Ledger
@@ -356,209 +326,63 @@ Requires =eglot= and =rust-mode= packages.
   (setq rust-format-on-save t)
 #+end_src
 
-** C++
-
-* C++ IDE
-
-** Eglot
-#+begin_src emacs-lisp :tangle yes
-  (add-hook 'c++-mode-hook #'eglot-ensure)
-  (add-hook 'c-mode-hook #'eglot-ensure)
-
-  (setq eglot-autoshutdown t)
-  (setq eglot-extend-to-xref t)
-
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 '((c++-mode c-mode) . ("clangd" "--background-index" "--pch-storage=memory"))))
-#+end_src
+** C++ IDE
 
 #+begin_src emacs-lisp :tangle yes
-  (global-corfu-mode)
-  (setq corfu-cycle t
-        corfu-auto t
-        corfu-auto-delay 0.0
-        corfu-quit-no-match 'separator
-        corfu-preselect-first t)
-#+end_src
+     ;; LSP client using clangd
+     (add-hook 'c++-mode-hook #'eglot-ensure)
+     (add-hook 'c-mode-hook #'eglot-ensure)
 
-#+begin_src emacs-lisp :tangle yes
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-file)
-#+end_src
+     (setq eglot-autoshutdown t)
+     (setq eglot-extend-to-xref t)
 
-#+begin_src emacs-lisp :tangle yes
-  (add-hook 'prog-mode-hook #'flymake-mode)
-#+end_src
+     (with-eval-after-load 'eglot
+       (add-to-list 'eglot-server-programs
+                    '((c++-mode c-mode) . ("clangd"
+                                           "--background-index" "--pch-storage=memory"
+                                           "--clang-tidy"))))
 
-#+begin_src emacs-lisp :tangle yes
-  (setq project-vc-merge-submodules nil)
-#+end_src
+     ;; Completion UI (popup)
+     (global-corfu-mode)
+     (setq corfu-cycle t
+           corfu-auto t
+           corfu-auto-delay 0.0
+           corfu-quit-no-match 'separator
+           corfu-preselect-first t)
 
-#+begin_src emacs-lisp :tangle yes
-  (vertico-mode)
-  (global-set-key (kbd "C-s") #'consult-line)
-  (global-set-key (kbd "C-c p s") #'consult-ripgrep)
-#+end_src
+     ;; Extra completion sources
+     (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+     (add-to-list 'completion-at-point-functions #'cape-file)
 
-#+begin_src emacs-lisp :tangle yes
-  (add-hook 'c++-mode-hook
-            (lambda ()
-              (setq c-basic-offset 4)
-              (c-set-style "linux")))
-#+end_src
+     ;; Diagnostics
+     (add-hook 'prog-mode-hook #'flymake-mode)
 
+     ;; Project management
+     (setq project-vc-merge-submodules nil)
+
+     ;; Vertico and Consult for navigation
+     (vertico-mode)
+     (global-set-key (kbd "C-s") #'consult-line)
+     (global-set-key (kbd "C-c p s") #'consult-ripgrep)
+
+     ;; C/C++ indentation settings matching clangd/eglot-format
+     (setq-default c-default-style '((c++-mode . "stroustrup")
+                                     (c-mode . "stroustrup")))
+     (setq-default c-basic-offset 2)
+     (setq-default indent-tabs-mode nil)
+
+     ;; Enable electric-indent to match LSP autoformat behavior
+     (electric-indent-mode 1)
+
+     ;; Optional: Format buffer before save using eglot
+     (add-hook 'before-save-hook
+               (lambda ()
+                 (when (derived-mode-p 'c-mode 'c++-mode)
+                   (eglot-format-buffer))))
+#+end_src
 
 ** Nix
 
 #+begin_src emacs-lisp :tangle yes
   (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
 #+end_src
-
-** C
-
-*** Simpc
-
-#+begin_src emacs-lisp :tangle yes
-  (require 'subr-x)
-
-  (defvar simpc-mode-syntax-table
-    (let ((table (make-syntax-table)))
-      ;; C/C++ style comments
-      (modify-syntax-entry ?/ ". 124b" table)
-      (modify-syntax-entry ?* ". 23" table)
-      (modify-syntax-entry ?\n "> b" table)
-      ;; Preprocessor stuff?
-      (modify-syntax-entry ?# "." table)
-      ;; Chars are the same as strings
-      (modify-syntax-entry ?' "\"" table)
-      ;; Treat <> as punctuation (needed to highlight C++ keywords
-      ;; properly in template syntax)
-      (modify-syntax-entry ?< "." table)
-      (modify-syntax-entry ?> "." table)
-
-      (modify-syntax-entry ?& "." table)
-      (modify-syntax-entry ?% "." table)
-      table))
-
-  (defun simpc-types ()
-    '("char" "int" "long" "short" "void" "bool" "float" "double" "signed" "unsigned"
-      "char16_t" "char32_t" "char8_t"
-      "int8_t" "uint8_t" "int16_t" "uint16_t" "int32_t" "uint32_t" "int64_t" "uint64_t"
-      "uintptr_t"
-      "size_t"))
-
-  (defun simpc-keywords ()
-    '("auto" "break" "case" "const" "continue" "default" "do"
-      "else" "enum" "extern" "for" "goto" "if" "register"
-      "return"  "sizeof" "static" "struct" "switch" "typedef"
-      "union"  "volatile" "while" "alignas" "alignof" "and"
-      "and_eq" "asm" "atomic_cancel" "atomic_commit" "atomic_noexcept" "bitand"
-      "bitor" "catch"  "class" "co_await"
-      "co_return" "co_yield" "compl" "concept" "const_cast" "consteval" "constexpr"
-      "constinit" "decltype" "delete" "dynamic_cast" "explicit" "export" "false" 
-      "friend" "inline" "mutable" "namespace" "new" "noexcept" "not" "not_eq"
-      "nullptr" "operator" "or" "or_eq" "private" "protected" "public" "reflexpr"
-      "reinterpret_cast" "requires" "static_assert" "static_cast" "synchronized"
-      "template" "this" "thread_local" "throw" "true" "try" "typeid" "typename"
-      "using" "virtual" "wchar_t" "xor" "xor_eq"))
-
-  (defun simpc-font-lock-keywords ()
-    (list
-     `("# *[#a-zA-Z0-9_]+" . font-lock-preprocessor-face)
-     `("#.*include \\(\\(<\\|\"\\).*\\(>\\|\"\\)\\)" . (1 font-lock-string-face))
-     `(,(regexp-opt (simpc-keywords) 'symbols) . font-lock-keyword-face)
-     `(,(regexp-opt (simpc-types) 'symbols) . font-lock-type-face)))
-
-  (defun simpc--previous-non-empty-line ()
-    (save-excursion
-      (forward-line -1)
-      (while (and (not (bobp))
-                  (string-empty-p
-                   (string-trim-right
-                    (thing-at-point 'line t))))
-        (forward-line -1))
-      (thing-at-point 'line t)))
-
-  (defun simpc--indentation-of-previous-non-empty-line ()
-    (save-excursion
-      (forward-line -1)
-      (while (and (not (bobp))
-                  (string-empty-p
-                   (string-trim-right
-                    (thing-at-point 'line t))))
-        (forward-line -1))
-      (current-indentation)))
-
-  (defun simpc--desired-indentation ()
-    (let* ((cur-line (string-trim-right (thing-at-point 'line t)))
-           (prev-line (string-trim-right (simpc--previous-non-empty-line)))
-           (indent-len 4)
-           (prev-indent (simpc--indentation-of-previous-non-empty-line)))
-      (cond
-       ((string-match-p "^\\s-*switch\\s-*(.+)" prev-line)
-        prev-indent)
-       ((and (string-suffix-p "{" prev-line)
-             (string-prefix-p "}" (string-trim-left cur-line)))
-        prev-indent)
-       ((string-suffix-p "{" prev-line)
-        (+ prev-indent indent-len))
-       ((string-prefix-p "}" (string-trim-left cur-line))
-        (max (- prev-indent indent-len) 0))
-       ((string-suffix-p ":" prev-line)
-        (if (string-suffix-p ":" cur-line)
-            prev-indent
-          (+ prev-indent indent-len)))
-       ((string-suffix-p ":" cur-line)
-        (max (- prev-indent indent-len) 0))
-       (t prev-indent))))
-
-  ;;; TODO: customizable indentation (amount of spaces, tabs, etc)
-  (defun simpc-indent-line ()
-    (interactive)
-    (when (not (bobp))
-      (let* ((desired-indentation
-              (simpc--desired-indentation))
-             (n (max (- (current-column) (current-indentation)) 0)))
-        (indent-line-to desired-indentation)
-        (forward-char n))))
-
-  (define-derived-mode simpc-mode prog-mode "Simple C"
-    "Simple major mode for editing C files."
-    :syntax-table simpc-mode-syntax-table
-    (setq-local font-lock-defaults '(simpc-font-lock-keywords))
-    (setq-local indent-line-function 'simpc-indent-line)
-    (setq-local comment-start "// "))
-
-  (provide 'simpc-mode)
-#+end_src
-
-*** Linux kernel coding style
-
-#+begin_src emacs-lisp :tangle yes
-  (setq c-default-style "stroustrup")
-  (setq tab-width 8)
-#+end_src
-
-#+begin_src emacs-lisp :tangle yes
-  (defvar my-cpp-other-file-alist
-  '(("\\.cpp\\'" (".hpp" ".ipp"))
-    ("\\.ipp\\'" (".hpp" ".cpp"))
-    ("\\.hpp\\'" (".ipp" ".cpp"))
-    ("\\.cxx\\'" (".hxx" ".ixx"))
-    ("\\.ixx\\'" (".cxx" ".hxx"))
-    ("\\.hxx\\'" (".ixx" ".cxx"))
-    ("\\.c\\'" (".h"))
-    ("\\.h\\'" (".c"))
-    ))
-
-(setq-default ff-other-file-alist 'my-cpp-other-file-alist)
-
-(add-hook 'c-initialization-hook (lambda ()
-    (define-key c-mode-base-map [(meta o)] 'ff-get-other-file))
-)
-
-#+end_src
-
-#+RESULTS:
-| #[nil ((define-key c-mode-base-map [(meta o)] 'ff-get-other-file)) nil] |
