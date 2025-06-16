@@ -381,6 +381,16 @@ Requires =eglot= and =rust-mode= packages.
                    (eglot-format-buffer))))
 #+end_src
 
+Debugger
+#+begin_src emacs-lisp :tangle yes
+  (setq gdb-many-windows t)          ;; enable a rich UI layout
+  (setq gdb-show-main t)             ;; show main at startup
+  (setq gdb-use-separate-io-buffer t) ;; separate buffer for program I/O
+#+end_src
+
+#+RESULTS:
+: t
+
 ** Nix
 
 #+begin_src emacs-lisp :tangle yes
