@@ -40,7 +40,8 @@
 
   (setq dired-listing-switches "-alFh")
 
-
+  ;; return to prev layout with C-c left
+  (winner-mode 1)
   ;; (defun rc/duplicate-dwim()
     ;; (interactive)
     ;; (duplicate-dwim ())
