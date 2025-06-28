@@ -181,7 +181,7 @@ Configure mc
 
 #+begin_src emacs-lisp :tangle yes
   (load-theme 'doom-gruvbox t)
-  (set-face-attribute 'default nil :font "Iosevka-12")
+  (set-face-attribute 'default nil :font "Iosevka-6")
 #+end_src
 
 Modus operandi customization
@@ -330,6 +330,14 @@ Requires =eglot= and =rust-mode= packages.
 ** C++ IDE
 
 #+begin_src emacs-lisp :tangle yes
+     ;; C/C++ indentation settings matching clangd/eglot-format
+     (setq-default c-default-style '((c++-mode . "stroustrup")
+                                     (c-mode . "stroustrup")))
+     (setq-default c-basic-offset 2)
+     (setq-default indent-tabs-mode nil)
+#+end_src
+
+#+begin_src emacs-lisp :tangle no
      ;; LSP client using clangd
      (add-hook 'c++-mode-hook #'eglot-ensure)
      (add-hook 'c-mode-hook #'eglot-ensure)
@@ -365,12 +373,6 @@ Requires =eglot= and =rust-mode= packages.
      (vertico-mode)
      (global-set-key (kbd "C-s") #'consult-line)
      (global-set-key (kbd "C-c p s") #'consult-ripgrep)
-
-     ;; C/C++ indentation settings matching clangd/eglot-format
-     (setq-default c-default-style '((c++-mode . "stroustrup")
-                                     (c-mode . "stroustrup")))
-     (setq-default c-basic-offset 2)
-     (setq-default indent-tabs-mode nil)
 
      ;; Enable electric-indent to match LSP autoformat behavior
      (electric-indent-mode 1)
