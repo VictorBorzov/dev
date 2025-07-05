@@ -170,11 +170,6 @@ Configure mc
             "Time's up!"))
       "No timer set"))
 
-  ;; If font is loaded before frame creation it is reset
-  (add-to-list 'after-make-frame-functions
-               (lambda (frame)
-                 (select-frame frame)
-                 (set-face-attribute 'default nil :font "Iosevka-18")))
 #+end_src
 
 * Themes
@@ -182,6 +177,11 @@ Configure mc
 #+begin_src emacs-lisp :tangle yes
   (load-theme 'doom-gruvbox t)
   (set-face-attribute 'default nil :font "Iosevka-6")
+  ;; If font is loaded before frame creation it is reset
+  (add-to-list 'after-make-frame-functions
+               (lambda (frame)
+                 (select-frame frame)
+                 (set-face-attribute 'default nil :font "Iosevka-6")))
 #+end_src
 
 Modus operandi customization
