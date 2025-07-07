@@ -1,9 +1,19 @@
 {
-  pkgs,
-  lib,
   ...
 }: {
   vim = {
+    globals.mapleader = " ";
+
+    options = {
+      number = true;
+      relativenumber = false;
+      tabstop = 2;
+      shiftwidth = 2;
+      expandtab = false;
+      autoindent = true;
+      smartindent = true;
+    };
+
     theme.enable = true;
     theme.name = "gruvbox";
     theme.style = "dark";
