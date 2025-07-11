@@ -122,7 +122,7 @@ Configure mc
 
     (setq org-capture-templates '(
       ("t" "Todo [inbox]" entry (file+headline "~/sync/orgmode/gtd/inbox.org" "Inbox") "\n* TODO %i%?\n")
-      ("c" "Todo [main]" entry (file+headline "~/sync/orgmode/gtd/main.org" "Inbox") "\n* TODO %i%?\n")
+      ("c" "Todo [main]" entry (file "~/sync/org/life.org") "\n* TODO %i%?\n")
       ("r" "Reschedule task with reason"
          entry (file+headline "~/sync/org/main.org" "Task Reschedules")
          "* TODO %^{Task description}\nSCHEDULED: %^t\n:LOGBOOK:\n- Rescheduled from %^{Original date} due to %^{Reason}\n:END:\n")
@@ -398,4 +398,12 @@ Debugger
 
 #+begin_src emacs-lisp :tangle yes
   (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
+#+end_src
+
+* Ollama
+
+#+begin_src emacs-lisp :tangle yes
+  (global-set-key (kbd "C-c o") #'ollama-buddy-menu)
+  (global-set-key (kbd "C-c O")  #'ollama-buddy-transient-menu-wrapper)
+
 #+end_src

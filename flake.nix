@@ -145,23 +145,20 @@
           shellHook = basicHook;
         };
         qt = pkgs.mkShell {
-                  buildInputs = with pkgs; [
-                    qt6.qtbase
-                    qt6.qtdeclarative
-                    qt6.qttools
-                    qt6.qtsvg
-                    qt6.wrapQtAppsHook
-                    cmake
-                    ninja
-                    gdb
-                    makeWrapper
-                  ];
-
-                  shellHook = ''
-                    echo "Qt6 dev shell ready"
-                    echo "Qt version: $(qmake --version 2>/dev/null || echo qmake not found)"
-                  '';
-                };
+          buildInputs = with pkgs; [
+            # gcc
+            # qtcreator
+            qt6.qtbase
+            # qt6.qtdeclarative
+            qt6.qttools
+            qt6.qtsvg
+            qt6.wrapQtAppsHook
+            cmake
+            ninja
+            gdb
+            makeWrapper
+          ];
+        };
 
         tex = pkgs.mkShell {
           buildInputs =
