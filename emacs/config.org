@@ -1,71 +1,110 @@
 * Basics
 
 #+begin_src emacs-lisp :tangle yes
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (show-paren-mode 1)
-  (scroll-bar-mode -1)
-  (delete-selection-mode 1)
-  (global-hl-line-mode -1)
-  (blink-cursor-mode -1)
-  (column-number-mode 1)
-  ;; (global-set-key (kbd "M-p") #'scroll-down-line)
-  ;; (global-set-key (kbd "M-n") #'scroll-up-line)
+    (menu-bar-mode -1)
+    (tool-bar-mode -1)
+    (show-paren-mode 1)
+    (scroll-bar-mode -1)
+    (delete-selection-mode 1)
+    (global-hl-line-mode -1)
+    (blink-cursor-mode -1)
+    (column-number-mode 1)
+    ;; (global-set-key (kbd "M-p") #'scroll-down-line)
+    ;; (global-set-key (kbd "M-n") #'scroll-up-line)
 
-  '(warning-minimum-level :error)
+    (global-unset-key (kbd "<pinch>"))
+    '(warning-minimum-level :error)
 
-  (global-display-line-numbers-mode +1)
+    (global-display-line-numbers-mode +1)
 
-  ;; (defun my-relative-line-numbers-hook ()
-  ;;   (setq display-line-numbers 'relative))
-  ;; (add-hook 'display-line-numbers-mode-hook 'my-relative-line-numbers-hook)
+    ;; (defun my-relative-line-numbers-hook ()
+    ;;   (setq display-line-numbers 'relative))
+    ;; (add-hook 'display-line-numbers-mode-hook 'my-relative-line-numbers-hook)
 
-  (setq set-fringe-mode 0)
-  (setq mode-line-format nil)
+    (setq set-fringe-mode 0)
+    (setq mode-line-format nil)
 
-  (setq backup-directory-alist '(("." . "~/.emacs_saves")))
+    (setq backup-directory-alist '(("." . "~/.emacs_saves")))
 
-  (setq use-short-answers t)
+    (setq use-short-answers t)
 
-  (setq ring-bell-function 'ignore)
+    (setq ring-bell-function 'ignore)
 
-  (setq-default indent-tabs-mode nil)
-  (setq-default tab-width 8)
+    (setq-default indent-tabs-mode nil)
+    (setq-default tab-width 8)
 
-  (global-visual-line-mode 1)
+    (global-visual-line-mode 1)
 
-  (setq ido-enable-flex-matching t)
-  (setq ido-everywhere t)
-  (ido-mode 1)
+    (setq ido-enable-flex-matching t)
+    (setq ido-everywhere t)
+    (ido-mode 1)
 
-  (setq dired-listing-switches "-alFh")
+    (setq dired-listing-switches "-alFh")
 
-  ;; return to prev layout with C-c left
-  (winner-mode 1)
-  ;; (defun rc/duplicate-dwim()
-    ;; (interactive)
-    ;; (duplicate-dwim ())
-    ;; (next-line))
+    (setq-default mode-line-format
+                  (list
+                   ;; major mode
+                 "%m: "
+                 ;; buffer name with line and column
+                 "%b:%l:%c "
+                 ;; shows saved (-) unsaved (*) or read-only (%) flags
+                 "(%*)"))
 
-  ;; (global-set-key (kbd "C-,") 'rc/duplicate-dwim)
+    (setq-default mode-line-format
+                  (list
+                   ;; major mode
+                 "%m: "
+                 ;; buffer name
+                 "%b "
+                 ;; shows saved (-) unsaved (*) or read-only (%) flags
+                 "(%*), "
+                 ;; line number
+                 "line %l "))
+
+
+
+    ;; return to prev layout with C-c left
+    (winner-mode 1)
+
+  ;; Rebind Shift+Arrow to switch windows
+  (global-set-key (kbd "S-<left>")  #'windmove-left)
+  (global-set-key (kbd "S-<right>") #'windmove-right)
+  (global-set-key (kbd "S-<up>")    #'windmove-up)
+  (global-set-key (kbd "S-<down>")  #'windmove-down)
+
+  ;; Make emacs detect sentences as period + single space
+  (setq sentence-end-double-space nil)
+
+
+
+
+    (defun rc/duplicate-dwim()
+      (interactive)
+      (duplicate-dwim ())
+      (next-line))
+
+    (global-set-key (kbd "C-,") 'rc/duplicate-dwim)
 
 #+end_src
 
+#+RESULTS:
+: rc/duplicate-dwim
+
 Keybindings
 #+begin_src emacs-lisp :tangle yes
-  ;; Opens a new line and places cursor on it, without breaking the current line
-  ;; (define-key global-map (kbd "<M-return>") (lambda ()
-  ;;                                             (interactive)
-  ;;                                             (move-end-of-line 1)
-  ;;                                             (newline-and-indent)))
+  Opens a new line and places cursor on it, without breaking the current line
+  (define-key global-map (kbd "<M-return>") (lambda ()
+                                              (interactive)
+                                              (move-end-of-line 1)
+                                              (newline-and-indent)))
 
-  ;; ;; Opens a new line above and places cursor on it
-  ;; (define-key global-map (kbd "<M-S-return>") (lambda ()
-  ;;                                             (interactive)
-  ;;                                             (move-beginning-of-line 1)
-  ;;                                             (newline)
-  ;;                                             (previous-line)
-  ;;                                             (indent-according-to-mode)))
+  ;; Opens a new line above and places cursor on it
+  (define-key global-map (kbd "<M-S-return>") (lambda ()
+                                              (interactive)
+                                              (move-beginning-of-line 1)
+                                              (newline)
+                                              (previous-line)
+                                              (indent-according-to-mode)))
 #+end_src
 
 * Smex
@@ -76,10 +115,13 @@ Configure smex and backup old call just in case
   (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 #+end_src
 
+#+RESULTS:
+: execute-extended-command
+
 * Multiple cursor
 
 Configure mc
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp :tangle no
   ;; (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
   ;; (global-set-key (kbd "C->") 'mc/mark-next-like-this)
   ;; (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
@@ -102,6 +144,9 @@ Configure mc
   (setq reftex-plug-into-AUCTeX t)
 #+end_src
 
+#+RESULTS:
+: t
+
 * Orgmode
 
 #+begin_src emacs-lisp :tangle yes
@@ -118,6 +163,10 @@ Configure mc
           '((nil :maxlevel . 3)
         (org-agenda-files :maxlevel . 3)))
 
+  ;; active Babel languages
+    (org-babel-do-load-languages
+    'org-babel-load-languages
+    '((shell . t)))
   ;;  (setq org-refile-targets '((nil :maxlevel . 2)))
 
     (setq org-capture-templates '(
@@ -156,6 +205,8 @@ Configure mc
     (setq org-confirm-babel-evaluate nil)
 #+end_src
 
+#+RESULTS:
+
 ** Task status for Status bars
 
 #+begin_src emacs-lisp :tangle yes
@@ -172,10 +223,14 @@ Configure mc
 
 #+end_src
 
+#+RESULTS:
+: my-org-timer-remaining-time
+
 * Themes
 
 #+begin_src emacs-lisp :tangle yes
-  (load-theme 'doom-gruvbox t)
+  (add-to-list 'custom-theme-load-path "/home/vb/dev/emacs/themes")
+  (load-theme 'gruber-darkest t)
   (set-face-attribute 'default nil :font "Iosevka-6")
   ;; If font is loaded before frame creation it is reset
   (add-to-list 'after-make-frame-functions
@@ -183,6 +238,9 @@ Configure mc
                  (select-frame frame)
                  (set-face-attribute 'default nil :font "Iosevka-6")))
 #+end_src
+
+#+RESULTS:
+| #[(frame) ((select-frame frame) (set-face-attribute 'default nil :font Iosevka-6)) nil] | pgtk-dnd-init-frame |
 
 Modus operandi customization
 #+begin_src emacs-lisp :tangle no
@@ -224,6 +282,9 @@ Show whitespaces in program mode
   ;; (add-hook 'prog-mode-hook 'whitespace-mode)
 #+end_src
 
+#+RESULTS:
+| face | empty | newline | trailing | space-mark | indentation::space |
+
 * Ledger
 
 Specify useful commands for ledger
@@ -243,6 +304,21 @@ Specify useful commands for ledger
         ("account" "%(binary) -f %(ledger-file) --cost -X EUR reg %(account)")
         ("account-rsd" "%(binary) -f %(ledger-file) --cost -X RSD reg %(account)")))
 #+end_src
+
+#+RESULTS:
+| cashflow      | ledger -f %(ledger-file) --cost -X EUR bal ^Income ^Expenses    |
+| cashflow-rsd  | ledger -f %(ledger-file) --cost -X RSD bal ^Income ^Expenses    |
+| net-worth     | ledger -f %(ledger-file) --cost -X EUR bal ^Assets ^Liabilities |
+| net-worth-rsd | ledger -f %(ledger-file) --cost -X RSD bal ^Assets ^Liabilities |
+| prices        | ledger prices -f %(ledger-file)                                 |
+| bal           | %(binary) -f %(ledger-file) --cost -X EUR bal                   |
+| bal-rsd       | %(binary) -f %(ledger-file) --cost -X RSD bal                   |
+| reg           | %(binary) -f %(ledger-file) --cost -X EUR reg                   |
+| reg-rsd       | %(binary) -f %(ledger-file) --cost -X RSD reg                   |
+| payee         | %(binary) -f %(ledger-file) --cost -X EUR reg @%(payee)         |
+| payee-rsd     | %(binary) -f %(ledger-file) --cost -X RSD reg @%(payee)         |
+| account       | %(binary) -f %(ledger-file) --cost -X EUR reg %(account)        |
+| account-rsd   | %(binary) -f %(ledger-file) --cost -X RSD reg %(account)        |
 
 * Org-Roam
 
@@ -276,6 +352,9 @@ Specify useful commands for ledger
   (org-roam-db-autosync-mode)
 #+end_src
 
+#+RESULTS:
+: t
+
 
 ** Org-Roam UI
 
@@ -286,6 +365,9 @@ Specify useful commands for ledger
   (setq org-roam-ui-open-on-start t)
 #+end_src
 
+#+RESULTS:
+: t
+
 * Languages
 
 ** Compilation mode
@@ -294,6 +376,9 @@ Skip warnings in compilation mode.
 #+begin_src emacs-lisp :tangle no
   (setq compilation-skip-threshold 2)
 #+end_src
+
+#+RESULTS:
+: 2
 
 ** Flycheck
 
@@ -327,6 +412,9 @@ Requires =eglot= and =rust-mode= packages.
   (setq rust-format-on-save t)
 #+end_src
 
+#+RESULTS:
+: t
+
 ** C++ IDE
 
 #+begin_src emacs-lisp :tangle yes
@@ -336,6 +424,40 @@ Requires =eglot= and =rust-mode= packages.
      (setq-default c-basic-offset 2)
      (setq-default indent-tabs-mode nil)
 #+end_src
+
+#+RESULTS:
+
+Semantic mode for navigation and completion
+#+begin_src emacs-lisp :tangle yes
+  ;; Enable Semantic features
+  (semantic-mode 1)
+
+  ;; Auto-parse code and provide intelligent completions
+  (global-semantic-idle-summary-mode 1)
+  (global-semantic-idle-completions-mode 1)
+  (global-semantic-idle-local-symbol-highlight-mode 1)
+  (global-semantic-decoration-mode 1)
+  (global-semantic-highlight-func-mode 1)
+  (global-semantic-stickyfunc-mode 0)
+
+#+end_src
+
+#+RESULTS:
+: t
+
+
+Open cppreference.com documentation for symbol at point
+#+begin_src emacs-lisp :tangle yes
+  (defun cpp-ref-doc ()
+    "Open cppreference.com documentation for symbol at point."
+    (interactive)
+    (let ((symbol (thing-at-point 'symbol t)))
+      (browse-url (format "https://en.cppreference.com/mwiki/index.php?search=%s" symbol))))
+#+end_src
+
+#+RESULTS:
+: cpp-ref-doc
+
 
 #+begin_src emacs-lisp :tangle no
      ;; LSP client using clangd

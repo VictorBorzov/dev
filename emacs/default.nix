@@ -58,7 +58,6 @@ in (pkgs.emacsWithPackagesFromUsePackage {
     epkgs.ledger-mode
     epkgs.gruber-darker-theme
     epkgs.smex
-    epkgs.ollama-buddy
     # epkgs.multiple-cursors
     # epkgs.corfu
     # epkgs.cape

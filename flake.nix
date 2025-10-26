@@ -160,6 +160,12 @@
           ];
         };
 
+        python = pkgs.mkShell {
+          buildInputs = [
+            (pkgs.python3.withPackages (ps: with ps; [ matplotlib seaborn ]))
+          ];
+        };
+
         tex = pkgs.mkShell {
           buildInputs =
             basics
