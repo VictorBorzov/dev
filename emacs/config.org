@@ -92,7 +92,7 @@
 
 Keybindings
 #+begin_src emacs-lisp :tangle yes
-  Opens a new line and places cursor on it, without breaking the current line
+  ;; Opens a new line and places cursor on it, without breaking the current line
   (define-key global-map (kbd "<M-return>") (lambda ()
                                               (interactive)
                                               (move-end-of-line 1)
@@ -234,9 +234,9 @@ Configure mc
   (set-face-attribute 'default nil :font "Iosevka-6")
   ;; If font is loaded before frame creation it is reset
   (add-to-list 'after-make-frame-functions
-               (lambda (frame)
-                 (select-frame frame)
-                 (set-face-attribute 'default nil :font "Iosevka-6")))
+  (lambda (frame)
+    (select-frame frame)
+    (set-face-attribute 'default nil :font "Iosevka-6")))
 #+end_src
 
 #+RESULTS:

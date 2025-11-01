@@ -2,7 +2,7 @@
 let
   pkgs = import nixpkgs {
     inherit system;
-    overlays = [ emacs-overlay.overlays.default ];
+    overlays = [emacs-overlay.overlays.default];
   };
 in (pkgs.emacsWithPackagesFromUsePackage {
   # Your Emacs config file. Org mode babel files are also
@@ -12,7 +12,6 @@ in (pkgs.emacsWithPackagesFromUsePackage {
   #     support.
   # config = ./emacs.org;
   config = ./config.org;
-
   # Whether to include your config as a default init file.
   # If being bool, the value of config is used.
   # Its value can also be a derivation like this if you want to do some
