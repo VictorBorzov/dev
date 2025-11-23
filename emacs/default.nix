@@ -45,24 +45,5 @@ in (pkgs.emacsWithPackagesFromUsePackage {
   alwaysTangle = true;
 
   # Optionally provide extra packages not in the configuration file.
-  extraEmacsPackages = epkgs: [
-    epkgs.magit
-    epkgs.doom-themes
-    epkgs.org-roam
-    epkgs.org-roam-ui
-    epkgs.rust-mode
-    epkgs.markdown-mode
-    epkgs.nix-mode
-    # epkgs.magit-delta
-    epkgs.ledger-mode
-    epkgs.gruber-darker-theme
-    epkgs.smex
-    # epkgs.multiple-cursors
-    # epkgs.corfu
-    # epkgs.cape
-    # epkgs.consult
-    # epkgs.vertico
-    # epkgs.project
-    # epkgs.doct
-  ];
+  extraEmacsPackages = epkgs: [];
 })
