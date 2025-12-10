@@ -1,7 +1,7 @@
 * Basics
 
 #+begin_src emacs-lisp :tangle yes
-  (menu-bar-mode 1)
+  (menu-bar-mode 0)
   (tool-bar-mode 0)
   (scroll-bar-mode 1)
   (delete-selection-mode 1)
@@ -54,8 +54,9 @@
                                               (indent-according-to-mode)))
   (add-to-list 'custom-theme-load-path "/home/vb/dev/emacs/themes")
   (load-theme 'gruber-darkest 1)
-  (set-face-attribute 'default nil :font "Iosevka-12")
-
+  (set-face-attribute 'default nil :font "Iosevka-6")
+  (global-set-key (kbd "<f2>") 'global-hl-line-mode)
+  (auto-insert-mode 1)
 #+end_src
 
 #+RESULTS:
