@@ -28,10 +28,13 @@
       )
   (custom-theme-set-variables
    'gruber-darkest
-   '(frame-brackground-mode (quote dark)))
+   '(frame-brackground-mode (quote dark))
+   )
 
   (custom-theme-set-faces
    'gruber-darkest
+
+   '(scroll-bar ((t (:background "#282828"))))
 
    ;; Agda2
    `(agda2-highlight-datatype-face ((t (:foreground ,gruber-darkest-quartz))))
@@ -102,6 +105,45 @@
                              :background nil))))
    `(diff-added ((t ,(list :foreground gruber-darkest-green
                            :background nil))))
+   `(diff-refine-removed ((t ,(list :background "#2a1a1a"
+                                    :foreground nil))))
+   `(diff-refine-added ((t ,(list :background "#1a2a1a"
+                                  :foreground nil))))
+   `(diff-header ((t ,(list :background gruber-darkest-bg+2
+                            :foreground gruber-darkest-fg))))
+   `(diff-file-header ((t ,(list :background gruber-darkest-bg+2
+                                 :foreground gruber-darkest-fg
+                                 ))))
+   `(diff-hunk-header ((t ,(list :background gruber-darkest-bg+2
+                                  :foreground gruber-darkest-fg))))
+   `(diff-header-highlight ((t ,(list :background gruber-darkest-bg+3
+                                      :foreground gruber-darkest-fg))))
+
+   ;; Ediff
+   `(ediff-even-diff-A ((t ,(list :background "#2a2a2a"
+                                  :foreground nil))))
+   `(ediff-even-diff-B ((t ,(list :background "#2a2a2a"
+                                  :foreground nil))))
+   `(ediff-even-diff-C ((t ,(list :background "#2a2a2a"
+                                  :foreground nil))))
+   `(ediff-odd-diff-A ((t ,(list :background "#252525"
+                                 :foreground nil))))
+   `(ediff-odd-diff-B ((t ,(list :background "#252525"
+                                 :foreground nil))))
+   `(ediff-odd-diff-C ((t ,(list :background "#252525"
+                                 :foreground nil))))
+   `(ediff-current-diff-A ((t ,(list :foreground gruber-darkest-red+1
+                                     :background nil))))
+   `(ediff-current-diff-B ((t ,(list :foreground gruber-darkest-green
+                                     :background nil))))
+   `(ediff-current-diff-C ((t ,(list :foreground gruber-darkest-niagara
+                                     :background nil))))
+   `(ediff-fine-diff-A ((t ,(list :background "#2a1a1a"
+                                  :foreground nil))))
+   `(ediff-fine-diff-B ((t ,(list :background "#1a2a1a"
+                                  :foreground nil))))
+   `(ediff-fine-diff-C ((t ,(list :background "#1a1a2a"
+                                  :foreground nil))))
 
    ;; Dired
    `(dired-directory ((t (:foreground ,gruber-darkest-niagara :weight bold))))
