@@ -1,128 +1,129 @@
 * Basics
 
 #+begin_src emacs-lisp :tangle yes
-    (setq ring-bell-function 'ignore)
-    (global-visual-line-mode 1)
-    (which-function-mode 1)
-    (setq-default mode-line-format '("%m: %b:%l:%c (%*) " which-func-format))
-    (blink-cursor-mode 0)
-    (menu-bar-mode 0)
-    (tool-bar-mode 0)
-    (scroll-bar-mode 0)
-    ;; Make emacs detect sentences as period + single space
-    (setq sentence-end-double-space nil)
-    ;; Replace when paste
-    (delete-selection-mode 1)
+  (setq ring-bell-function 'ignore)
+  (global-visual-line-mode 1)
+  (which-function-mode 1)
+  (setq-default mode-line-format '("%m: %b:%l:%c (%*) " which-func-format))
+  (blink-cursor-mode 0)
+  (menu-bar-mode 1)
+  (tool-bar-mode 0)
+  (scroll-bar-mode 1)
+  ;; Make emacs detect sentences as period + single space
+  (setq sentence-end-double-space nil)
+  ;; Replace when paste
+  (delete-selection-mode 1)
 
-    ;; Backups
-    (setq backup-directory-alist `(("." . "~/.saves")))
+  (global-set-key (kbd "<pinch>") nil)
+  ;; Backups
+  (setq backup-directory-alist `(("." . "~/.saves")))
 
-    ;; Programming
-    (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-    (setq c-default-style "linux")
+  ;; Programming
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+  (setq c-default-style "linux")
 
-    ;; Use spaces for indentations
-    (setq indent-tabs-mode nil)
+  ;; Use spaces for indentations
+  (setq indent-tabs-mode nil)
 
-    ;; ==================== Keybindings ====================
+  ;; ==================== Keybindings ====================
 
-    (global-set-key (kbd "M-p") #'scroll-down-line)
-    (global-set-key (kbd "M-n") #'scroll-up-line)
+  (global-set-key (kbd "M-p") #'scroll-down-line)
+  (global-set-key (kbd "M-n") #'scroll-up-line)
 
-    ;; Windows
-    (global-set-key (kbd "S-<left>")  #'windmove-left)
-    (global-set-key (kbd "S-<right>") #'windmove-right)
-    (global-set-key (kbd "S-<up>")    #'windmove-up)
-    (global-set-key (kbd "S-<down>")  #'windmove-down)
+  ;; Windows
+  (global-set-key (kbd "S-<left>")  #'windmove-left)
+  (global-set-key (kbd "S-<right>") #'windmove-right)
+  (global-set-key (kbd "S-<up>")    #'windmove-up)
+  (global-set-key (kbd "S-<down>")  #'windmove-down)
 
-    ;; Custom actions
-    (defun rc/duplicate-dwim() (interactive) (duplicate-dwim ()) (next-line))
-    (global-set-key (kbd "C-,") 'rc/duplicate-dwim)
+  ;; Custom actions
+  (defun rc/duplicate-dwim() (interactive) (duplicate-dwim ()) (next-line))
+  (global-set-key (kbd "C-,") 'rc/duplicate-dwim)
 
-    ;; newline
-    (define-key global-map (kbd "<M-return>") (lambda ()
-                                                (interactive)
-                                                (move-end-of-line 1)
-                                                (newline-and-indent)))
-    (define-key global-map (kbd "<M-S-return>") (lambda ()
+  ;; newline
+  (define-key global-map (kbd "<M-return>") (lambda ()
+                                              (interactive)
+                                              (move-end-of-line 1)
+                                              (newline-and-indent)))
+  (define-key global-map (kbd "<M-S-return>") (lambda ()
                                                 (interactive)
                                                 (move-beginning-of-line 1)
                                                 (newline)
                                                 (previous-line)
                                                 (indent-according-to-mode)))
 
-    ;; ==================== Highlight line in all buffers ====================
-    (defvar mirrored-hl-overlays nil)
+  ;; ==================== Highlight line in all buffers ====================
+  (defvar mirrored-hl-overlays nil)
 
-    (defun mirrored-hl-line ()
-      (mapc #'delete-overlay mirrored-hl-overlays)
-      (setq mirrored-hl-overlays nil)
-      (dolist (win (window-list))
-        (with-selected-window win
-          (let ((ov (make-overlay (line-beginning-position)
-                                  (line-beginning-position 2))))
-            (overlay-put ov 'face 'hl-line)
-            (push ov mirrored-hl-overlays)))))
+  (defun mirrored-hl-line ()
+    (mapc #'delete-overlay mirrored-hl-overlays)
+    (setq mirrored-hl-overlays nil)
+    (dolist (win (window-list))
+      (with-selected-window win
+        (let ((ov (make-overlay (line-beginning-position)
+                                (line-beginning-position 2))))
+          (overlay-put ov 'face 'hl-line)
+          (push ov mirrored-hl-overlays)))))
 
-    (defun toggle-mirrored-hl ()
-      (interactive)
-      (if (memq #'mirrored-hl-line post-command-hook)
-          (progn
-            (remove-hook 'post-command-hook #'mirrored-hl-line)
-            (mapc #'delete-overlay mirrored-hl-overlays)
-            (setq mirrored-hl-overlays nil))
-        (add-hook 'post-command-hook #'mirrored-hl-line)))
+  (defun toggle-mirrored-hl ()
+    (interactive)
+    (if (memq #'mirrored-hl-line post-command-hook)
+        (progn
+          (remove-hook 'post-command-hook #'mirrored-hl-line)
+          (mapc #'delete-overlay mirrored-hl-overlays)
+          (setq mirrored-hl-overlays nil))
+      (add-hook 'post-command-hook #'mirrored-hl-line)))
 
-    ;;(global-set-key (kbd "<f2>") #'toggle-mirrored-hl)
-    (define-key global-map (kbd "<f5>") #'global-hl-line-mode)
+  ;;(global-set-key (kbd "<f2>") #'toggle-mirrored-hl)
+  (define-key global-map (kbd "<f5>") #'global-hl-line-mode)
 
-    ;; ==================== Theme ====================
+  ;; ==================== Theme ====================
 
-    (add-to-list 'custom-theme-load-path "~/dev/emacs/themes")
+  (add-to-list 'custom-theme-load-path "~/dev/emacs/themes")
 
-    ;; (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
-    ;; (setq modus-themes-italic-constructs nil
-    ;;       modus-themes-bold-constructs t
-    ;;       modus-themes-mixed-fonts nil
-    ;;       modus-themes-variable-pitch-ui t
-    ;;       modus-themes-disable-other-themes nil
-    ;;       modus-themes-prompts nil
-    ;;       modus-themes-completions nil
-    ;;       modus-themes-org-blocks nil
-    ;;       modus-themes-headings nil)
-    ;; (load-theme 'modus-operandi t)
-    (load-theme 'gruber-darkest t)
-    (add-to-list 'default-frame-alist '(font . "Iosevka-12"))
-    (add-hook 'after-init-hook (lambda () (set-face-attribute 'default nil :font "Iosevka-12")))
+  ;; (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
+  ;; (setq modus-themes-italic-constructs nil
+  ;;       modus-themes-bold-constructs t
+  ;;       modus-themes-mixed-fonts nil
+  ;;       modus-themes-variable-pitch-ui t
+  ;;       modus-themes-disable-other-themes nil
+  ;;       modus-themes-prompts nil
+  ;;       modus-themes-completions nil
+  ;;       modus-themes-org-blocks nil
+  ;;       modus-themes-headings nil)
+  ;; (load-theme 'modus-operandi t)
+  (load-theme 'gruber-darkest t)
+  (add-to-list 'default-frame-alist '(font . "Iosevka-12"))
+  (add-hook 'after-init-hook (lambda () (set-face-attribute 'default nil :font "Iosevka-12")))
 
-    ;; Show whitespaces and tabs in diff mode
-    (defun my-diff-show-whitespace ()
-      (setq-local indent-tabs-mode nil)
-      (setq-local whitespace-style
-                  '(face tabs spaces trailing tab-mark space-mark))
-      (setq-local whitespace-display-mappings
-                  '((space-mark 32 [183] [46])      ; · or .
-                    (tab-mark   9  [9655 9] [92 9]))) ; ▷\t fallback
-      (setq-local show-trailing-whitespace t)
-      (whitespace-mode 1))
+  ;; Show whitespaces and tabs in diff mode
+  (defun my-diff-show-whitespace ()
+    (setq-local indent-tabs-mode nil)
+    (setq-local whitespace-style
+                '(face tabs spaces trailing tab-mark space-mark))
+    (setq-local whitespace-display-mappings
+                '((space-mark 32 [183] [46])      ; · or .
+                  (tab-mark   9  [9655 9] [92 9]))) ; ▷\t fallback
+    (setq-local show-trailing-whitespace t)
+    (whitespace-mode 1))
 
-    (add-hook 'diff-mode-hook #'my-diff-show-whitespace)
+  (add-hook 'diff-mode-hook #'my-diff-show-whitespace)
 
-    ;; Startup screen
-    ;; (add-hook 'emacs-startup-hook
-    ;; 	  (lambda ()
-    ;; 	    (let* ((buffer-agenda "*Org Agenda*"))
-    ;; 	      (org-agenda-list)
-    ;; 	      (switch-to-buffer (get-buffer buffer-agenda))
-    ;; 	      )))
+  ;; Startup screen
+  ;; (add-hook 'emacs-startup-hook
+  ;; 	  (lambda ()
+  ;; 	    (let* ((buffer-agenda "*Org Agenda*"))
+  ;; 	      (org-agenda-list)
+  ;; 	      (switch-to-buffer (get-buffer buffer-agenda))
+  ;; 	      )))
 
   (setq org-agenda-files '("~/org/notes.org"))
-  ; Source - https://stackoverflow.com/a
-; Posted by abo-abo
-; Retrieved 2025-12-21, License - CC BY-SA 3.0
-
-  (setq org-refile-targets '(("~/org/notes.org" :maxlevel . 2)))
+  					; Source - https://stackoverflow.com/a
+  					; Posted by abo-abo
+  					; Retrieved 2025-12-21, License - CC BY-SA 3.0
   
+  (setq org-refile-targets '(("~/org/notes.org" :maxlevel . 2)))
+  (setq org-log-done 'note)
 #+end_src
 
 #+RESULTS:
