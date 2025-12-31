@@ -45,7 +45,7 @@ in (pkgs.emacsWithPackagesFromUsePackage {
   alwaysTangle = true;
 
   # Optionally provide extra packages not in the configuration file.
-  extraEmacsPackages = epkgs: [
+  extraEmacsPackages = epkgs: with epkgs; [
     nix-mode
   ];
 })
